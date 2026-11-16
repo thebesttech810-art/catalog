@@ -60,7 +60,7 @@
   var C = window.CONFIG || {}, qr = document.getElementById("qr");
   document.getElementById("marca").textContent = C.marca || "Catalog";
   var tel = String(C.whatsapp || "").replace(/\D/g, "");
-  document.getElementById("contacto").textContent = ((C.contacto && C.contacto.nombre) || "") + " · WhatsApp: " + (tel ? "+" + tel : "[POR CONFIRMAR: número de WhatsApp]");
+  document.getElementById("contacto").textContent = ((C.contacto && C.contacto.nombre) || "") + " · WhatsApp: " + (tel ? (function (n) { n = n.indexOf("593") === 0 ? "0" + n.slice(3) : n; return n.length === 10 ? n.slice(0, 3) + " " + n.slice(3, 6) + " " + n.slice(6) : n; })(tel) : "[POR CONFIRMAR: número de WhatsApp]");
   if (/^https?:\/\//i.test(C.paginaUrl || "")) {
     var q = qrcode(0, "M"); q.addData(C.paginaUrl); q.make();
     qr.innerHTML = q.createSvgTag({ cellSize: 4, margin: 0, scalable: true });

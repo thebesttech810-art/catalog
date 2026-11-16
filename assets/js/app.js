@@ -167,6 +167,13 @@
       paqs.appendChild(art);
     });
 
+    /* Número visible en el cierre: 593996966975 -> 099 696 6975 */
+    var tel = String(C.whatsapp || "").replace(/\D/g, "");
+    if ($("filaTel")) {
+      var loc = tel.indexOf("593") === 0 ? "0" + tel.slice(3) : tel;
+      $("telVisible").textContent = loc.length === 10 ? loc.slice(0, 3) + " " + loc.slice(3, 6) + " " + loc.slice(6) : loc;
+      $("filaTel").hidden = !tel;
+    }
     var cr = C.casoReal;
     if (cr && cr.activo === true && /^https:\/\//.test(cr.enlace || "")) {
       $("ejemplo-real").hidden = false; $("verEjemplo").hidden = false;
@@ -192,72 +199,6 @@
         $("testis").appendChild(b);
       });
     }
-  }
-
-  /* ---------- Portada: la venta que baja el stock, y que el visitante puede repetir ---------- */
-  var hero = { t: [], foco: null, tag: null, ini: 0, ocupado: false };
-  function heroPonerTag() {
-    var s = hero.foco.s;
-    hero.tag.textContent = s > 3 ? "Hay " + s : textoStock(s);
-    hero.tag.setAttribute("data-e", estadoStock(s));
-  }
-  function heroBoton() {
-    var b = $("heroVender");
-    b.disabled = hero.ocupado;
-    b.textContent = hero.foco.s > 0 ? "Vender otra" : "Reponer";
-  }
-  function heroVender() {
-    if (hero.ocupado || !hero.foco) return;
-    var vis = $("heroVis"), repone = hero.foco.s <= 0;
-    hero.ocupado = true; heroBoton();
-    $("heroCajaV").textContent = repone ? "Ingresaron " + hero.ini + " unidades" : "Vendiste 1 unidad";
-    function aplicar() {
-      hero.foco.s = repone ? hero.ini : hero.foco.s - 1;
-      heroPonerTag();
-      $("heroAl").textContent = "Actualizado ahora";
-      $("heroPie").textContent = repone ? "Volvió a aparecer disponible. Nadie editó el catálogo."
-        : hero.foco.s > 0 ? "El catálogo ya dice «" + textoStock(hero.foco.s) + "». Nadie lo editó."
-        : "El catálogo ya dice «Agotado». Nadie lo editó. Toca «Reponer» para empezar de nuevo.";
-      hero.ocupado = false; heroBoton();
-    }
-    if (reduce) { aplicar(); return; }
-    vis.classList.remove("golpe"); void vis.offsetWidth; vis.classList.add("golpe");
-    hero.t.push(setTimeout(function () { hero.tag.classList.remove("cambio"); void hero.tag.offsetWidth; hero.tag.classList.add("cambio"); }, 480));
-    hero.t.push(setTimeout(aplicar, 800));
-  }
-  function pintarHero(animar) {
-    hero.t.forEach(clearTimeout); hero.t = [];
-    var vis = $("heroVis"), cont = $("heroProds");
-    $("heroNombre").textContent = VV.nombre();
-    $("heroLogo").textContent = VV.iniciales();
-    var base = D.copiar(VV.estado.rubro);
-    var foco = base.filter(function (p) { return p.s >= 2 && p.s <= 4; })[0] || base[0];
-    var otros = base.filter(function (p) { return p !== foco && p.s > 4; }).slice(0, 2);
-    var lista = [otros[0] || base[2], foco, otros[1] || base[3]];
-    hero.foco = foco; hero.ini = foco.s; hero.ocupado = true;
-    cont.textContent = "";
-    lista.forEach(function (p) {
-      var c = el("div", "h-p" + (p === foco ? " foco" : ""));
-      c.appendChild(ilus(p));
-      c.appendChild(el("b", "", dinero(p.p)));
-      var t = tagStock(p.s); if (p.s > 3) t.textContent = "Hay " + p.s; c.appendChild(t);
-      if (p === foco) hero.tag = t;
-      cont.appendChild(c);
-    });
-    $("heroCajaV").textContent = "Vendiste 1 unidad";
-    $("heroPie").textContent = "Nadie editó el catálogo. Toca «Vender otra» y míralo bajar.";
-    $("heroAl").textContent = "Actualizado hace 14 min";
-    $("heroVender").disabled = true;
-    var repintado = vis.classList.contains("anim") || vis.classList.contains("fin");
-    vis.classList.remove("anim", "fin", "golpe");
-    function venta() { foco.s -= 1; heroPonerTag(); $("heroAl").textContent = "Actualizado ahora"; }
-    function listo() { vis.classList.remove("anim"); vis.classList.add("fin"); hero.ocupado = false; heroBoton(); }
-    if (reduce || !animar) { venta(); listo(); return; }
-    if (repintado) void vis.offsetWidth;
-    vis.classList.add("anim");
-    hero.t.push(setTimeout(function () { hero.tag.classList.add("cambio"); }, 2100));
-    hero.t.push(setTimeout(venta, 2420));
-    hero.t.push(setTimeout(listo, 3700));
   }
 
   /* ---------- A. Selector de problemas ---------- */
@@ -603,8 +544,6 @@
       s.hidden = false;
     }
     pintarWa();
-    pintarHero(true);
-    $("heroVender").addEventListener("click", heroVender);
     if (q.get("presentar") === "1") document.documentElement.classList.add("presentar");
     despuesDePintar(function () {
     pintarDolores();
@@ -619,7 +558,6 @@
     if (q.get("presentar") === "1") presPoner(true);
 
     document.addEventListener("vv:cambio", function () {
-      pintarHero(false);
       escLimpiar();
     });
     VV.listo = true;

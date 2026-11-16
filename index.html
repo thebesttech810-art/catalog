@@ -56,24 +56,34 @@
       <p class="saludo" id="saludo" hidden></p>
       <h1>Tu catálogo se actualiza solo. Tú sigues vendiendo.</h1>
       <p class="apoyo">Una vitrina digital conectada a tu sistema contable. Tus clientes ven precios y stock al día, un asistente responde sus preguntas y el pedido te llega por WhatsApp. Yo la armo y la mantengo.</p>
-      <div class="portada-acc">
-        <a class="btn btn-wa btn-gr" data-wa="portada" href="#cierre"><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg>Escribir por WhatsApp</a>
-        <button type="button" class="enlace" id="iniciarTour">Ver cómo funciona en un minuto</button>
-        <a class="enlace" id="verEjemplo" href="#ejemplo-real" hidden>Mira un catálogo real funcionando</a>
-      </div>
     </div>
 
-    <div class="portada-vis" id="heroVis" role="group" aria-label="Demostración: registra una venta en la caja y mira cómo baja el stock del catálogo sin que nadie lo edite">
-      <div class="h-caja" id="heroCaja">
-        <div class="h-caja-txt"><span class="h-caja-t">Caja de tu local</span><span class="h-caja-v" id="heroCajaV">Vendiste 1 unidad</span></div>
-        <button type="button" class="h-vender" id="heroVender" disabled>Vender otra</button>
+    <!-- Video explicativo: se dibuja con código (assets/js/video.js) -->
+    <figure class="video" id="video" aria-labelledby="videoT">
+      <div class="video-marco" id="vidMarco">
+        <canvas id="vidCanvas" width="1000" height="1000" role="img" aria-label="Video explicativo de Catalog. Debajo puedes leer lo que dice."></canvas>
+        <button type="button" class="video-grande" id="vidGrande"><span class="video-grande-i" aria-hidden="true"><svg class="ico"><use href="#i-play"/></svg></span><span id="vidGrandeTxt">Ver el video (1 min)</span></button>
+        <div class="video-fin" id="vidFin" hidden>
+          <p class="video-fin-t">¿Lo armamos para tu tienda?</p>
+          <a class="btn btn-wa" data-wa="video" href="#cierre"><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg>Escribir por WhatsApp</a>
+          <button type="button" class="btn btn-sec" id="vidOtra"><svg class="ico" aria-hidden="true"><use href="#i-repetir"/></svg>Ver de nuevo</button>
+        </div>
       </div>
-      <div class="h-linea" aria-hidden="true"><i></i></div>
-      <div class="h-cel">
-        <div class="h-cel-bar"><span class="h-logo" id="heroLogo">TT</span><span id="heroNombre">Tu Tienda</span><span class="h-al" id="heroAl">Actualizado hace 14 min</span></div>
-        <div class="h-prods" id="heroProds"></div>
+      <div class="video-ctrl">
+        <button type="button" class="video-b" id="vidBtn" aria-label="Reproducir el video"><svg class="ico" aria-hidden="true"><use href="#i-play"/></svg></button>
+        <input type="range" class="esc-seek video-seek" id="vidSeek" min="0" max="695" step="1" value="0" aria-label="Avance del video">
+        <span class="video-t" id="vidT">0:00 / 1:09</span>
+        <button type="button" class="video-b" id="vidFull" aria-label="Ver el video en pantalla completa" hidden><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4h6v2H6v4H4zm10 0h6v6h-2V6h-4zM4 14h2v4h4v2H4zm14 0h2v6h-6v-2h4z" fill="currentColor"/></svg></button>
       </div>
-      <p class="h-pie" id="heroPie" role="status">Nadie editó el catálogo. Toca «Vender otra» y míralo bajar.</p>
+      <figcaption class="video-cap" id="videoT">Catalog en un minuto: qué es, cómo funciona y los dos extras. No tiene sonido: todo está escrito.</figcaption>
+      <details class="video-txt"><summary>Leer lo que dice el video</summary><ol id="vidTexto"></ol></details>
+      <p class="oculto" id="vidVivo" aria-live="polite"></p>
+    </figure>
+
+    <div class="portada-acc">
+      <a class="btn btn-wa btn-gr" data-wa="portada" href="#cierre"><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg>Escribir por WhatsApp</a>
+      <a class="enlace" id="verEjemplo" href="#ejemplo-real" hidden>Mira un catálogo real funcionando</a>
+      <button type="button" class="enlace" id="iniciarTour">Recorrer las demostraciones paso a paso</button>
     </div>
 
     <p class="paraquien">Para islas y locales de centro comercial en Ecuador: celulares, accesorios, electrodomésticos y videojuegos. Hoy funciona con Contífico; si usas otro sistema, reviso si se puede conectar.</p>
@@ -531,6 +541,7 @@
       <p class="nota nota-clara">Lo que probaste se agrega a tu mensaje, para que te responda sobre eso. Puedes borrarlo antes de enviar.</p>
     </div>
     <dl class="datos">
+      <div id="filaTel"><dt>WhatsApp</dt><dd><a class="tel" id="telVisible" data-wa="cierre" href="#cierre">099 696 6975</a></dd></div>
       <div><dt>Te atiende</dt><dd><span data-cfg="contacto.nombre"></span><span data-fila> · <span data-cfg="contacto.presentacion" data-alt=""></span></span></dd></div>
       <div data-fila><dt>Desde</dt><dd><span data-cfg="contacto.ciudad" data-alt=""></span></dd></div>
       <div data-fila><dt>Horario</dt><dd><span data-cfg="contacto.horario" data-alt=""></span></dd></div>
@@ -615,5 +626,6 @@
 <script src="assets/js/demos.js" defer></script>
 <script src="assets/js/reporte.js" defer></script>
 <script src="assets/js/extras.js" defer></script>
+<script src="assets/js/video.js" defer></script>
 </body>
 </html>

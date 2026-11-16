@@ -17,8 +17,8 @@ window.CONFIG = {
   // Tu número en formato internacional, SIN el signo +, sin espacios ni guiones.
   // Para Ecuador empieza con 593 y sigue tu celular sin el 0 inicial.
   // Mientras esté vacío, los botones abren WhatsApp para que la persona elija el contacto.
-  // [POR CONFIRMAR: número de WhatsApp]
-  whatsapp: "",
+  // Tu número 099 696 6975 se escribe así:
+  whatsapp: "593996966975",
 
   /* --- DIRECCIÓN PÚBLICA ------------------------------------- */
   // La dirección de esta página cuando la publiques, por ejemplo la que te dé GitHub Pages.
@@ -59,6 +59,7 @@ window.CONFIG = {
     paquete2:  "Hola, me interesa el catálogo con un complemento. ¿Cuánto cuesta y qué necesito?",
     paquete3:  "Hola, me interesa el paquete completo: catálogo, reportes y conteo. ¿Cuánto cuesta y qué necesito?",
     casoReal:  "Hola, vi el catálogo de Electronic Games y quiero uno así para mi negocio.",
+    video:     "Hola, vi el video de Catalog y quiero saber cómo sería para mi negocio.",
     cierre:    "Hola, quiero mi propio catálogo conectado. Te cuento qué vendo y qué sistema uso."
   },
 
@@ -121,6 +122,7 @@ window.CONFIG = {
   casoReal: {
     activo: true,
     nombre: "Electronic Games",
+    resumen: "Tienda de videojuegos con tres locales",
     etiqueta: "Ejemplo real, funcionando hoy",
     titulo: "Así quedó el catálogo de una empresa real",
     descripcion: "Electronic Games es una tienda de videojuegos con tres locales en centros comerciales de Quito y el valle. Yo armé su catálogo digital y hoy funciona así. Ábrelo y mira cómo se podría hacer el tuyo.",

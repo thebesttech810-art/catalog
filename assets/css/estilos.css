@@ -851,3 +851,66 @@ a.enlace{display:inline-flex;align-items:center}
 #verEjemplo:active{transform:translateY(3px);box-shadow:none}
 @media (prefers-reduced-motion:reduce){#verEjemplo::before{animation:none}}
 .portada-acc{row-gap:16px}
+
+
+/* =====================================================================
+   RONDA 5: video explicativo en la portada
+   ===================================================================== */
+.portada-in{grid-template-areas:"txt" "vid" "acc" "pq"}
+.portada-acc{grid-area:acc;margin-top:0}
+.video{grid-area:vid;margin:0;min-width:0;width:100%;max-width:520px;justify-self:center}
+.video-marco{position:relative;width:100%;aspect-ratio:1/1;border:3px solid var(--tinta);border-radius:24px;overflow:hidden;background:var(--vidrio);box-shadow:8px 8px 0 var(--tinta)}
+.video-marco canvas{display:block;width:100%;height:100%;cursor:pointer}
+.video-grande{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);display:inline-flex;align-items:center;gap:12px;min-height:56px;padding:8px 22px 8px 9px;border-radius:99px;border:3px solid var(--tinta);background:var(--tinta);color:#fff;font-family:var(--tit);font-weight:800;font-size:1.04rem;white-space:nowrap;box-shadow:0 4px 0 rgba(22,24,58,.35)}
+.video-grande-i{width:40px;height:40px;border-radius:50%;background:var(--etiqueta);color:var(--tinta);display:grid;place-items:center;transition:transform .15s}
+.video-grande:hover .video-grande-i{transform:scale(1.08)}
+.video-grande:active{transform:translate(-50%,3px);box-shadow:none}
+.video-fin{position:absolute;inset:0;background:rgba(238,242,247,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px;text-align:center}
+.video-fin-t{font-family:var(--tit);font-weight:800;font-size:clamp(1.3rem,5.2vw,1.8rem);line-height:1.15;margin-bottom:4px}
+.video-fin .btn{margin-top:0;min-width:min(260px,100%)}
+.video-ctrl{display:flex;align-items:center;gap:10px;margin-top:14px}
+.video-b{flex:none;width:48px;height:48px;border-radius:50%;border:2px solid var(--tinta);background:#fff;color:var(--tinta);display:grid;place-items:center;padding:0}
+.video-b.en-curso{background:var(--tinta);color:#fff}
+.video-seek{flex:1;min-width:0;margin:0}
+.video-t{flex:none;font-family:var(--tit);font-weight:700;font-size:.85rem;color:#3A3D61;font-variant-numeric:tabular-nums}
+.video-cap{font-size:.86rem;color:var(--suave);margin-top:6px}
+.video-txt{margin-top:4px;font-size:.92rem}
+.video-txt summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:700;color:var(--rotulo);text-decoration:underline;text-underline-offset:4px}
+.video-txt ol{display:grid;gap:6px;padding-left:22px;list-style:decimal;margin:4px 0 8px}
+.video-marco:fullscreen{border:0;border-radius:0;box-shadow:none;background:var(--tinta);display:grid;place-items:center}
+.video-marco:fullscreen canvas{width:min(100vw,100vh);height:min(100vw,100vh)}
+@media (min-width:760px){
+  .portada-in{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);grid-template-areas:"txt vid" "acc vid" "pq vid";grid-template-rows:auto auto 1fr;column-gap:56px;row-gap:22px}
+  .portada-txt{align-self:end}
+  .video{align-self:center}
+}
+
+/* Número de WhatsApp visible en el cierre */
+.datos .tel{color:#fff;font-family:var(--tit);font-weight:800;font-size:1.25rem;text-underline-offset:4px;display:inline-flex;align-items:center;min-height:44px}
+
+/* La cabecera fija de escritorio no tapa el inicio de estas secciones al saltar a ellas */
+@media (min-width:760px){.real,.cierre{scroll-margin-top:70px}}
+
+/* =====================================================================
+   RONDA 5b: correcciones del barrido de tamaños
+   ===================================================================== */
+/* Tabletas en vertical y celulares horizontales: la portada va en una sola columna */
+@media (min-width:760px) and (max-width:959px){
+  .portada-in{grid-template-columns:minmax(0,1fr);grid-template-areas:"txt" "vid" "acc" "pq";grid-template-rows:auto;row-gap:26px}
+  .portada-txt{align-self:auto}
+  .video{max-width:560px}
+}
+/* En dos columnas el titular se ajusta al ancho de su columna */
+@media (min-width:960px){
+  h1{font-size:clamp(2.6rem,4.6vw,3.9rem)}
+}
+/* El sello "Tienda real" ya no queda cortado contra el borde */
+@media (min-width:760px){
+  .real-qr{padding:30px 30px 0 0}
+}
+/* Celulares muy angostos (320 px): el botón de la cabecera cabe en una línea */
+@media (max-width:359px){
+  .marca{font-size:1rem;gap:7px}
+  .cab .btn-ch{font-size:.76rem;padding:8px 9px;gap:5px}
+  .cab .btn-ch .ico{width:1.1em;height:1.1em}
+}
