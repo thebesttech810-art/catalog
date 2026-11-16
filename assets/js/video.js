@@ -619,7 +619,7 @@
     if (!cv || !marco) return;
     var reduce = U.reduce;
     /* sonido: null = todavía no decidió (arranca mudo), true = con sonido, false = lo silenció la persona */
-    var st = { t: 0, play: false, previo: 0, ultimo: 0, raf: 0, auto: false, tocado: false, empezado: false, esc: -1, reanudar: false, sonido: null, audioOk: !!audio, espera: 0 };
+    var st = { t: 0, play: false, previo: 0, ultimo: 0, raf: 0, auto: false, tocado: false, empezado: false, esc: -1, reanudar: false, sonido: null, audioOk: !!audio, espera: 0, salio: false };
     var motor = crear(cv, {
       nombre: VV.nombre, iniciales: VV.iniciales, productos: function () { return VV.productos; },
       ilustrar: D.ilustrar, dinero: U.dinero, config: C, reduce: reduce, intro: true,
@@ -655,7 +655,6 @@
       var so = $("vidSonido"), on = st.sonido === true;
       so.hidden = !st.audioOk;
       so.setAttribute("aria-pressed", String(on));
-      so.setAttribute("aria-label", on ? "Silenciar el video" : "Activar el sonido del video");
       so.classList.toggle("en-curso", on);
       so.querySelector("use").setAttribute("href", on ? "#i-sonido" : "#i-mudo");
       $("vidPill").hidden = !(st.audioOk && st.play && st.sonido === null);
@@ -677,6 +676,15 @@
       if (p && p.catch) p.catch(function () { st.sonido = null; ui(); }); /* si el navegador no lo deja, sigue mudo */
     }
     function audioPausa() { if (audio && !audio.paused) audio.pause(); }
+    /* El audio (0,7 MB) empieza a bajarse un momento después de que arranca el video, para que suene sin esperar cuando
+       la persona toque el altavoz. Con ahorro de datos o conexión muy lenta solo se baja si lo piden. */
+    function precargarAudio() {
+      /* Si la persona ya pidió sonido, el audio está sonando o bajándose: load() lo cortaría. */
+      if (!audio || !st.audioOk || audio.dataset.pre || !audio.paused || audio.readyState > 0 || audio.currentTime > 0) return;
+      var c = navigator.connection;
+      if (c && (c.saveData || /(^|-)2g$/.test(c.effectiveType || ""))) return;
+      audio.dataset.pre = "1"; audio.preload = "auto"; audio.load();
+    }
     function audioIr(t) { if (audio && st.audioOk && st.sonido === true) { try { audio.currentTime = t; } catch (e) {} } }
     function alternarSonido() {
       tocar();
@@ -713,11 +721,12 @@
       tamano();
       audioPlay();
       st.raf = requestAnimationFrame(tick);
+      setTimeout(precargarAudio, 1500);
       ui();
     }
     function pausa() { st.play = false; cancelAnimationFrame(st.raf); audioPausa(); motor.dibujar(st.t); ui(); }
     function tocar() { st.tocado = true; }
-    function alternar() { tocar(); if (st.play) pausa(); else play(false); }
+    function alternar() { tocar(); st.salio = false; if (st.play) pausa(); else play(false); }
 
     $("vidGrande").addEventListener("click", function () { tocar(); play(false); });
     $("vidBtn").addEventListener("click", alternar);
@@ -742,14 +751,20 @@
       document.addEventListener("fullscreenchange", function () { setTimeout(function () { tamano(); motor.dibujar(st.empezado ? st.t : -1); }, 80); });
     }
 
-    /* Arranca solo cuando se ve, sin sonido (los navegadores no permiten sonido sin que la persona toque algo),
-       y se detiene si sale de la pantalla. Con movimiento reducido no arranca solo. Si la persona lo toca, manda ella. */
+    /* Arranca solo cuando se ve, sin sonido (los navegadores no permiten sonido sin que la persona toque algo).
+       Con movimiento reducido no arranca solo. Se detiene si sale de la pantalla, también cuando ya tenía sonido (la voz no
+       debe seguir hablando mientras la persona mira otra cosa) y, al volver a verse, sigue donde iba. Si la persona lo
+       pausó ella misma, no se mueve solo. */
     if ("IntersectionObserver" in window) {
       var io = new IntersectionObserver(function (es) {
         es.forEach(function (e) {
-          if (st.tocado) return;
-          if (e.intersectionRatio >= 0.6 && !reduce && !st.play && !terminado()) play(true);
-          else if (e.intersectionRatio < 0.25 && st.play && st.auto) pausa();
+          var r = e.intersectionRatio;
+          if (r < 0.25) {
+            if (st.play && (st.auto || st.sonido === true)) { st.salio = true; var a = st.auto; pausa(); st.auto = a; }
+          } else if (r >= 0.6) {
+            if (st.salio) { st.salio = false; if (!st.play && !terminado()) play(st.auto); }
+            else if (!st.tocado && !reduce && !st.play && !terminado()) play(true);
+          }
         });
       }, { threshold: [0, 0.25, 0.6] });
       io.observe(marco);
