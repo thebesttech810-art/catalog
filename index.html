@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="es-EC">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catalog · El catálogo que se actualiza solo con tu sistema</title>
+<meta name="description" content="Una vitrina digital conectada a tu sistema contable: precios y stock al día cada 15 minutos, un asistente que responde a tus clientes y pedidos que llegan a tu WhatsApp.">
+<meta name="theme-color" content="#16183A">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+<!-- VISTA PREVIA AL COMPARTIR (WhatsApp, redes).
+     Cuando publiques la página, cambia las DOS líneas marcadas con la dirección real.
+     Instrucciones paso a paso en LEEME.md. -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_EC">
+<meta property="og:site_name" content="Catalog">
+<meta property="og:title" content="Tu catálogo se actualiza solo. Tú sigues vendiendo.">
+<meta property="og:description" content="Precios y stock al día desde tu sistema contable, un asistente que responde a tus clientes y pedidos que llegan a tu WhatsApp. Pruébalo con el nombre de tu negocio.">
+<meta property="og:url" content="https://thebesttech810-art.github.io/catalog/"><!-- CAMBIAR 1 de 2 -->
+<meta property="og:image" content="https://thebesttech810-art.github.io/catalog/og-image.jpg"><!-- CAMBIAR 2 de 2 -->
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Una etiqueta de stock que cambia sola de 2 disponibles a 1 disponible después de una venta en la caja.">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="assets/css/estilos.css">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M12 3a9 9 0 0 0-7.7 13.6L3 21l4.6-1.2A9 9 0 1 0 12 3zm-4 8h8v1.6H8zm0-3h8v1.6H8zm0 6h5v1.6H8z" fill="currentColor"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4v16l13-8z" fill="currentColor"/></symbol>
+  <symbol id="i-pausa" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z" fill="currentColor"/></symbol>
+  <symbol id="i-repetir" viewBox="0 0 24 24"><path d="M12 5V1L6 6l6 5V7a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z" fill="currentColor"/></symbol>
+  <symbol id="i-cerrar" viewBox="0 0 24 24"><path d="M5 6.4 6.4 5 12 10.6 17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4-5.6-5.6L6.4 19 5 17.6 10.6 12z" fill="currentColor"/></symbol>
+</svg>
+
+<a class="saltar" href="#problemas">Saltar al contenido</a>
+<div class="progreso" aria-hidden="true"><i id="progreso"></i></div>
+
+<header class="cab">
+  <div class="cont cab-in">
+    <a class="marca" href="#portada" aria-label="Inicio">
+      <span class="marca-tag" aria-hidden="true"></span><span data-marca>Catalog</span>
+    </a>
+    <a class="btn btn-wa btn-ch" data-wa="general" href="#cierre"><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg>Escribir por WhatsApp</a>
+  </div>
+</header>
+
+<main>
+
+<!-- 1. PORTADA -->
+<section id="portada" class="portada" data-sec="Portada">
+  <div class="cont portada-in">
+    <div class="portada-txt">
+      <p class="saludo" id="saludo" hidden></p>
+      <h1>Tu catálogo se actualiza solo. Tú sigues vendiendo.</h1>
+      <p class="apoyo">Una vitrina digital conectada a tu sistema contable. Tus clientes ven precios y stock al día, un asistente responde sus preguntas y el pedido te llega por WhatsApp. Yo la armo y la mantengo.</p>
+      <div class="portada-acc">
+        <a class="btn btn-wa btn-gr" data-wa="portada" href="#cierre"><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg>Escribir por WhatsApp</a>
+        <button type="button" class="enlace" id="iniciarTour">Ver cómo funciona en un minuto</button>
+        <a class="enlace" id="verEjemplo" href="#ejemplo-real" hidden>Mira un catálogo real funcionando</a>
+      </div>
+    </div>
+
+    <div class="portada-vis" id="heroVis" role="group" aria-label="Demostración: registra una venta en la caja y mira cómo baja el stock del catálogo sin que nadie lo edite">
+      <div class="h-caja" id="heroCaja">
+        <div class="h-caja-txt"><span class="h-caja-t">Caja de tu local</span><span class="h-caja-v" id="heroCajaV">Vendiste 1 unidad</span></div>
+        <button type="button" class="h-vender" id="heroVender" disabled>Vender otra</button>
+      </div>
+      <div class="h-linea" aria-hidden="true"><i></i></div>
+      <div class="h-cel">
+        <div class="h-cel-bar"><span class="h-logo" id="heroLogo">TT</span><span id="heroNombre">Tu Tienda</span><span class="h-al" id="heroAl">Actualizado hace 14 min</span></div>
+        <div class="h-prods" id="heroProds"></div>
+      </div>
+      <p class="h-pie" id="heroPie" role="status">Nadie editó el catálogo. Toca «Vender otra» y míralo bajar.</p>
+    </div>
+
+    <p class="paraquien">Para islas y locales de centro comercial en Ecuador: celulares, accesorios, electrodomésticos y videojuegos. Hoy funciona con Contífico; si usas otro sistema, reviso si se puede conectar.</p>
+  </div>
+</section>
+
+<!-- Cinta decorativa: repite lo que ya dice la página -->
+<div class="cinta" aria-hidden="true"><div class="cinta-in"><span>Se actualiza solo cada 15 minutos</span><span>Precios y stock de tu sistema</span><span>Un asistente responde a tus clientes</span><span>Pedidos directo a tu WhatsApp</span><span>Sin pasarela de pagos</span><span>Yo lo armo y lo mantengo</span><span>Se actualiza solo cada 15 minutos</span><span>Precios y stock de tu sistema</span><span>Un asistente responde a tus clientes</span><span>Pedidos directo a tu WhatsApp</span><span>Sin pasarela de pagos</span><span>Yo lo armo y lo mantengo</span></div></div>
+
+<!-- EJEMPLO REAL: una empresa donde este catálogo ya funciona (se enciende o apaga en config.js) -->
+<section id="ejemplo-real" class="real" data-sec="Ejemplo real" aria-labelledby="realT" hidden>
+  <div class="cont real-in">
+    <div class="real-txt">
+      <p class="real-tag"><span class="real-punto" aria-hidden="true"></span><span id="realTag">Ejemplo real, funcionando hoy</span></p>
+      <h2 id="realT">Así quedó el catálogo de una empresa real</h2>
+      <p class="real-b" id="realDesc"></p>
+      <p class="real-probar" id="realProbar"></p>
+      <ul class="real-lista" id="realPuntos"></ul>
+      <div class="real-acc">
+        <a class="btn btn-gr real-btn" id="realEnlace" href="#ejemplo-real" target="_blank" rel="noopener noreferrer"><span id="realBtnTxt">Abrir el catálogo real</span><span class="oculto"> (se abre en una pestaña nueva)</span><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 4h6v6h-2V7.4l-7.3 7.3-1.4-1.4L16.6 6H14zM5 6h6v2H6v10h10v-5h2v7H4V6z" fill="currentColor"/></svg></a>
+        <a class="btn btn-wa" data-wa="casoReal" href="#cierre"><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg>Escribir por WhatsApp</a>
+      </div>
+      <p class="real-nota" id="realCierre"></p>
+    </div>
+    <aside class="real-qr" aria-label="Código QR para abrir el catálogo real desde el celular">
+      <div class="real-tel">
+        <span class="real-sello" aria-hidden="true">Tienda<br>real</span>
+        <p class="real-tel-top"><span class="real-punto" aria-hidden="true"></span>En vivo</p>
+        <div class="qr" id="realQr" role="img" aria-label="Código QR del catálogo real"></div>
+        <p>Escanéalo con la cámara de tu celular</p>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- 2. PROBLEMAS (A) -->
+<section id="problemas" class="sec" data-sec="¿Qué te pasa hoy?">
+  <div class="cont">
+    <h2>¿Qué te pasa hoy en tu negocio?</h2>
+    <p class="bajada">Toca el que más se parezca a tu día.</p>
+    <div class="dolores" id="dolores"></div>
+  </div>
+</section>
+
+<!-- 3. DOS TIENDAS (B) -->
+<section id="dos-tiendas" class="sec sec-blanca" data-sec="Dos tiendas, el mismo cliente">
+  <div class="cont">
+    <h2>Dos tiendas, el mismo cliente</h2>
+    <p class="bajada">El mismo mensaje llega a las dos. Mira qué pasa en cada una.</p>
+
+    <div class="esc-ctrl">
+      <div class="seg" role="group" aria-label="Escena">
+        <button type="button" class="seg-b" data-escena="0" aria-pressed="true">Pregunta por un producto</button>
+        <button type="button" class="seg-b" data-escena="1" aria-pressed="false">El producto se agotó</button>
+      </div>
+      <div class="esc-btns">
+        <button type="button" class="btn btn-sec" id="escPlay"><svg class="ico" aria-hidden="true"><use href="#i-play" id="escPlayIco"/></svg><span id="escPlayTxt">Ver la escena</span></button>
+        <button type="button" class="btn btn-sec" id="escRep"><svg class="ico" aria-hidden="true"><use href="#i-repetir"/></svg>Repetir</button>
+      </div>
+    </div>
+    <label class="esc-ayuda" for="escSeek">Arrastra la barra para adelantar o retroceder la escena</label>
+    <input type="range" class="esc-seek" id="escSeek" min="0" max="21000" step="100" value="0">
+
+    <div class="seg seg-lado" role="group" aria-label="Tienda que quieres ver">
+      <button type="button" class="seg-b" data-lado="sin" aria-pressed="true">Sin sistema</button>
+      <button type="button" class="seg-b" data-lado="con" aria-pressed="false">Con catálogo conectado</button>
+    </div>
+
+    <div class="tiendas" id="tiendas" data-lado="sin">
+      <article class="tienda tienda-sin" aria-labelledby="tSinT">
+        <header><h3 id="tSinT">Tienda sin sistema</h3><span class="reloj" id="escReloj">Espera: 0 min</span></header>
+        <div class="hilo" id="hiloSin" aria-live="polite"></div>
+        <p class="fin" id="finSin" hidden></p>
+      </article>
+      <article class="tienda tienda-con" aria-labelledby="tConT">
+        <header><h3 id="tConT">Tienda con catálogo conectado</h3><span class="reloj reloj-ok" id="escReloj2">Espera: 0 min</span></header>
+        <div class="hilo" id="hiloCon" aria-live="polite"></div>
+        <p class="fin" id="finCon" hidden></p>
+      </article>
+    </div>
+    <p class="nota">Escena ilustrativa. Los tiempos y los diálogos son un ejemplo, no una medición.</p>
+    <a class="btn btn-wa" data-wa="dosTiendas" href="#cierre"><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg>Escribir por WhatsApp</a>
+  </div>
+</section>
+
+<!-- 4. CATÁLOGO (C, D, E) -->
+<section id="catalogo" class="sec" data-sec="Tu catálogo, siempre al día">
+  <div class="cont">
+    <h2>Tu catálogo, siempre al día</h2>
+    <p class="bajada">Esta es una demostración que puedes tocar. Ponle el nombre de tu negocio, suma productos con el botón + y mira cómo se vería.</p>
+
+    <form class="probar" id="probar" autocomplete="off">
+      <p class="probar-t" id="probarT">Pruébalo con tu negocio</p>
+      <div class="campo">
+        <label for="pNegocio">Nombre de tu negocio</label>
+        <input id="pNegocio" name="negocio" type="text" maxlength="40" placeholder="Por ejemplo: Celulares Andrea" enterkeyhint="done">
+      </div>
+      <div class="campo">
+        <label for="pRubro">¿Qué vendes?</label>
+        <select id="pRubro" name="rubro">
+          <option value="celulares">Celulares y tecnología</option>
+          <option value="accesorios">Accesorios</option>
+          <option value="electrodomesticos">Electrodomésticos</option>
+          <option value="videojuegos">Videojuegos</option>
+          <option value="otro">Otro</option>
+        </select>
+      </div>
+      <fieldset class="campo colores">
+        <legend>Color de tu marca</legend>
+        <div class="colores-in" id="pColores"></div>
+      </fieldset>
+      <button type="submit" class="btn btn-pri">Ver mi catálogo de ejemplo</button>
+      <p class="probar-n">Nada de lo que escribas se guarda ni se envía.</p>
+    </form>
+
+    <div class="demo">
+      <div class="demo-izq">
+        <div class="seg seg-vista" role="group" aria-label="Vista del catálogo">
+          <button type="button" class="seg-b" data-vista="cliente" aria-pressed="true">Así lo ve tu cliente</button>
+          <button type="button" class="seg-b" data-vista="dueno" aria-pressed="false">Así lo ves tú</button>
+        </div>
+
+        <div class="cat" id="cat">
+          <div class="cat-cab">
+            <span class="cat-logo" id="catLogo" aria-hidden="true">TT</span>
+            <div><strong class="cat-nombre" id="catNombre">Tu Tienda</strong><span class="cat-al" id="catAl">Actualizado hace 14 min</span></div>
+            <span class="demo-tag">Demostración</span>
+          </div>
+
+          <div id="vistaCliente">
+            <div class="cat-busca">
+              <label class="oculto" for="cBuscar">Buscar producto</label>
+              <input id="cBuscar" type="search" placeholder="Buscar producto" enterkeyhint="search">
+            </div>
+            <div class="chips" id="cChips" role="group" aria-label="Categorías"></div>
+            <div class="cat-filtros">
+              <label for="cPrecio" class="oculto">Precio</label>
+              <select id="cPrecio">
+                <option value="0">Cualquier precio</option>
+                <option value="25">Hasta $25</option>
+                <option value="50">Hasta $50</option>
+                <option value="100">Hasta $100</option>
+                <option value="300">Hasta $300</option>
+              </select>
+              <label class="check"><input type="checkbox" id="cDisp"> Solo disponibles</label>
+            </div>
+            <p class="cat-n" id="cN" aria-live="polite"></p>
+            <div class="grid" id="cGrid"></div>
+            <button type="button" class="btn btn-sec cat-mas" id="cMas" hidden>Ver todos los productos</button>
+            <div class="pedido" id="pedido" hidden>
+              <div class="pedido-res"><strong id="pedN" role="status"></strong><span id="pedT"></span><button type="button" class="btn btn-pri btn-ch" id="pedVer" aria-expanded="false" aria-controls="pedDet">Ver cómo te llega</button></div>
+              <div class="pedido-det" id="pedDet" hidden>
+                <ul id="pedLista"></ul>
+                <p class="det-msg-t">Así le llega a tu WhatsApp:</p>
+                <p class="burbuja" id="pedMsg"></p>
+                <p class="nota">Tú confirmas el pedido y cobras como siempre. No hay pagos en línea.</p>
+                <button type="button" class="btn btn-sec btn-ch" id="pedVaciar">Vaciar el pedido</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="vistaDueno" hidden>
+            <p class="dueno-t">Tú no editas nada aquí. Nombres, precios y unidades vienen de tu sistema contable.</p>
+            <div class="dueno-est"><span class="pulso" aria-hidden="true"></span><span id="dUlt">Última lectura de tu sistema: hace 14 min</span><span id="dProx">Próxima: en 1 min</span></div>
+            <div class="tabla-scroll" tabindex="0" role="region" aria-label="Productos leídos de tu sistema">
+              <table class="dueno-tabla">
+                <thead><tr><th scope="col">Producto</th><th scope="col">Precio</th><th scope="col">Unidades</th></tr></thead>
+                <tbody id="dTabla"></tbody>
+              </table>
+            </div>
+            <p class="nota">Tus clientes ven nombre, precio, disponibilidad, fotos y descripción. No ven costos ni proveedores.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-der">
+        <div class="venta" id="venta">
+          <h3>Haz un cambio en tu sistema</h3>
+          <p class="venta-b">Vende o cambia un precio, como siempre lo haces. Mira qué pasa en el catálogo.</p>
+          <ol class="venta-flujo">
+            <li class="vf vf-caja" id="vfCaja"><span class="vf-t">Tu sistema contable</span><span class="vf-v" id="vfCajaV">Sin cambios todavía</span></li>
+            <li class="vf vf-reloj" id="vfReloj"><span class="reloj-c" aria-hidden="true"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16"/><circle cx="20" cy="20" r="16" id="vfArco"/></svg></span><span class="vf-t">El catálogo lee tu sistema cada 15 min</span><span class="vf-v" id="vfMin">0 min</span></li>
+            <li class="vf vf-cat" id="vfCat"><span class="vf-t">Tu catálogo</span><div class="vf-prod" id="vfProd"></div></li>
+          </ol>
+          <p class="venta-msg" id="ventaMsg" role="status" aria-live="polite"></p>
+          <div class="venta-btns">
+            <button type="button" class="btn btn-pri btn-gr" id="btnVenta">Simular una venta</button>
+            <button type="button" class="btn btn-sec" id="btnPrecio">Cambiar un precio</button>
+          </div>
+          <p class="nota">Demostración acelerada: aquí los 15 minutos pasan en segundos.</p>
+        </div>
+
+        <div class="asis" id="asis">
+          <div class="asis-cab">
+            <span class="avatar" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M6 14a6 6 0 0 1 6-6h17l13 13v13a6 6 0 0 1-6 6H12a6 6 0 0 1-6-6z" fill="var(--etiqueta)" stroke="var(--tinta)" stroke-width="2.5" stroke-linejoin="round"/><circle cx="35" cy="15" r="2.5" fill="var(--tinta)"/><circle cx="17" cy="24" r="2.6" fill="var(--tinta)"/><circle cx="28" cy="24" r="2.6" fill="var(--tinta)"/><path d="M16 31c4 4 9 4 13 0" fill="none" stroke="var(--tinta)" stroke-width="2.5" stroke-linecap="round"/></svg></span>
+            <div><h3>Pregúntale al asistente</h3><p id="asisQuien">Responde con los productos de Tu Tienda.</p></div>
+            <span class="demo-tag">Demostración</span>
+          </div>
+          <div class="asis-hilo" id="asisHilo" aria-live="polite"></div>
+          <div class="asis-sug" id="asisSug"></div>
+          <form class="asis-form" id="asisForm">
+            <label class="oculto" for="asisIn">Escribe tu pregunta</label>
+            <input id="asisIn" type="text" maxlength="80" placeholder="Escribe una pregunta" enterkeyhint="send">
+            <button type="submit" class="btn btn-pri">Preguntar</button>
+          </form>
+        </div>
+
+        <div class="vit-acc" id="vitAcc">
+          <p>El mismo catálogo sirve para la pantalla de tu local.</p>
+          <button type="button" class="btn btn-sec" id="btnVitrina">Así se vería en la pantalla de tu local</button>
+        </div>
+        <a class="btn btn-wa" data-wa="catalogo" href="#cierre"><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg>Escribir por WhatsApp</a>
+      </div>
+    </div>
+    <p class="nota">Negocio, productos, precios y unidades de ejemplo.</p>
+  </div>
+</section>
+
+<!-- 5. REPORTE (F) -->
+<section id="reporte" class="sec sec-blanca" data-sec="Tus ventas en tu celular">
+  <div class="cont dos-col">
+    <div class="col-txt">
+      <p class="extra">Complemento opcional</p>
+      <h2>Tus ventas en tu celular</h2>
+      <p class="bajada">Abres el reporte y sabes qué se vendió, si se vendió al precio correcto y qué mercadería mover o comprar. Toca las hojas y las alertas.</p>
+      <ul class="lista">
+        <li>Cada venta con su costo, su ganancia y el stock por local</li>
+        <li>Verificación de precios: lo vendido contra el precio de tu sistema</li>
+        <li>Qué comprar y qué mover de un local a otro, con un semáforo de reposición</li>
+      </ul>
+      <div class="rep-loc">
+        <p class="rep-loc-t" id="repLocT">¿Cuántos locales tienes?</p>
+        <div class="seg seg-loc" role="group" aria-labelledby="repLocT">
+          <button type="button" class="seg-b" data-loc="uno" aria-pressed="true">Un local</button>
+          <button type="button" class="seg-b" data-loc="varios" aria-pressed="false">Varios locales</button>
+        </div>
+        <p class="nota" id="repLocalNota" role="status">Con un solo local, el reporte te muestra ventas, precios y qué comprar. La hoja de traslados queda vacía.</p>
+      </div>
+      <a class="btn btn-wa" data-wa="reporte" href="#cierre"><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg>Escribir por WhatsApp</a>
+    </div>
+    <div class="col-demo">
+      <div class="cel" id="rep">
+        <div class="cel-arch"><span class="arch-ico" aria-hidden="true">X</span><span id="repArch">Reporte de ventas · Tu Tienda</span></div>
+        <div class="seg seg-per" role="group" aria-label="Periodo">
+          <button type="button" class="seg-b" data-per="0" aria-pressed="true">Ayer</button>
+          <button type="button" class="seg-b" data-per="1" aria-pressed="false">Esta semana</button>
+          <button type="button" class="seg-b" data-per="2" aria-pressed="false">Este mes</button>
+        </div>
+        <div class="rep-hoja" id="repHoja" role="tabpanel"></div>
+        <div class="rep-tabs" id="repTabs" role="tablist" aria-label="Hojas del reporte"></div>
+      </div>
+      <p class="nota">Cifras de ejemplo. El reporte real es un archivo de Excel con estas cinco hojas; aquí lo ves adaptado a la pantalla del celular.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 6. CONTEO (G) -->
+<section id="conteo" class="sec" data-sec="Inventario sin Excel">
+  <div class="cont">
+    <p class="extra">Complemento opcional</p>
+    <h2>Inventario sin Excel</h2>
+    <p class="bajada">Varias personas cuentan al mismo tiempo desde su celular y el sistema marca las diferencias.</p>
+
+    <div class="seg seg-conteo" role="group" aria-label="Forma de contar">
+      <button type="button" class="seg-b" data-conteo="antes" aria-pressed="true">Antes: con Excel</button>
+      <button type="button" class="seg-b" data-conteo="despues" aria-pressed="false">Después: con el celular</button>
+    </div>
+
+    <div class="antes" id="cntAntes">
+      <div class="antes-esc">
+        <div class="antes-hora"><span class="antes-lab">Así se va el día contando con Excel</span><strong id="antesHora">09:00</strong><div class="antes-dia" aria-hidden="true"><i id="antesBarra"></i></div></div>
+        <ul class="antes-pasos" id="antesPasos">
+          <li>Se descarga el stock del sistema a un Excel.</li>
+          <li>Una persona dicta el código de cada producto.</li>
+          <li>Otra lo busca en el Excel y anota la cantidad a mano.</li>
+          <li>Si alguien se equivoca de fila, hay que volver a buscar.</li>
+          <li>Se cierra el día y todavía falta comparar contra el sistema.</li>
+        </ul>
+      </div>
+      <button type="button" class="btn btn-pri" id="cntIr">Ver cómo se cuenta con el celular</button>
+    </div>
+
+    <div class="despues" id="cntDespues" hidden>
+      <div class="avance">
+        <div class="avance-t"><span>Avance del conteo, compartido por todos</span><strong id="cntPct" aria-live="polite">0 %</strong></div>
+        <div class="avance-b" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="cntBarra"><i></i></div>
+      </div>
+      <div class="celus" id="cntCelus"></div>
+      <div class="dif" id="cntDif" hidden>
+        <h3>Diferencias contra tu sistema</h3>
+        <div class="tabla-scroll" tabindex="0" role="region" aria-label="Diferencias del conteo">
+          <table class="dif-tabla"><thead><tr><th scope="col">Producto</th><th scope="col">Sistema</th><th scope="col">Contado</th><th scope="col">Resultado</th></tr></thead><tbody id="cntDifT"></tbody></table>
+        </div>
+      </div>
+      <div class="cnt-acc">
+        <button type="button" class="btn btn-pri" id="cntFin">Terminar el conteo</button>
+        <button type="button" class="btn btn-sec" id="cntRep">Empezar de nuevo</button>
+      </div>
+      <p class="cnt-cierre">Ya se usó en un inventario real de un retail con varios locales.</p>
+    </div>
+    <p class="nota">Escena y cantidades ilustrativas.</p>
+    <a class="btn btn-wa" data-wa="conteo" href="#cierre"><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg>Escribir por WhatsApp</a>
+  </div>
+</section>
+
+<!-- 7. CÓMO FUNCIONA -->
+<section id="como-funciona" class="sec sec-oscura" data-sec="Cómo funciona">
+  <div class="cont">
+    <h2>Cómo funciona</h2>
+    <ol class="pasos3">
+      <li>
+        <div class="p3-vis" aria-hidden="true"><span class="p3-caja">Tu sistema contable</span><span class="p3-hilo"></span><span class="p3-caja p3-cat">Tu catálogo</span></div>
+        <h3>Se conecta con tu sistema</h3>
+        <p>El catálogo lee tus productos, precios y unidades desde tu sistema contable. Hoy funciona con Contífico. Si usas otro sistema, reviso primero si permite la conexión.</p>
+      </li>
+      <li>
+        <div class="p3-vis" aria-hidden="true"><span class="p3-tag">Tu nombre</span><span class="p3-tag p3-tag2">Tus colores</span><span class="p3-tag p3-tag3">Tus categorías</span></div>
+        <h3>Armo tu catálogo</h3>
+        <p>Con el nombre, los colores y las categorías de tu negocio. Tú no instalas nada ni subes productos uno por uno.</p>
+      </li>
+      <li>
+        <div class="p3-vis" aria-hidden="true"><span class="p3-reloj"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16"/><path d="M20 10v10h9"/></svg></span><span class="p3-15">cada 15 min</span></div>
+        <h3>Se actualiza solo cada 15 minutos</h3>
+        <p>Cada 15 minutos vuelve a leer tu sistema. Por eso una venta en tu caja puede tardar hasta 15 minutos en verse en el catálogo. Nadie edita nada a mano.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- 8. PRIMERA SEMANA (H) -->
+<section id="primera-semana" class="sec" data-sec="Tu primera semana">
+  <div class="cont dos-col">
+    <div class="col-txt">
+      <h2>Tu primera semana</h2>
+      <p class="bajada">Así empezamos. Tú sigues vendiendo; yo me encargo de la parte técnica.</p>
+      <p class="plazo">Tiempo de cada paso: <span data-cfg="plazos.primeraSemana" data-alt="te lo confirmo por WhatsApp según tu caso"></span></p>
+      <a class="btn btn-wa" data-wa="semana" href="#cierre"><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg>Escribir por WhatsApp</a>
+    </div>
+    <ol class="linea" id="linea">
+      <li><h3>Me escribes</h3><p>Me cuentas qué vendes y qué sistema usas.</p></li>
+      <li><h3>Reviso tu sistema</h3><p>Confirmo que se pueda conectar. Si no se puede, te lo digo antes de empezar.</p></li>
+      <li><h3>Armo tu catálogo</h3><p>Con tus productos, tu nombre y tus colores.</p></li>
+      <li><h3>Lo revisas</h3><p>Me dices qué ajustar y lo corrijo.</p></li>
+      <li><h3>Lo compartes</h3><p>Mandas el enlace a tus clientes por WhatsApp y lo pones en tus redes.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- 9. COMPARA + CALCULADORA (I) -->
+<section id="compara" class="sec sec-blanca" data-sec="Compara">
+  <div class="cont">
+    <h2>Compara con lo que usas hoy</h2>
+    <p class="bajada">Las tres opciones sirven para mostrar productos. La diferencia está en quién las mantiene al día.</p>
+
+    <div class="seg seg-vs" role="group" aria-label="Comparar tu catálogo conectado con">
+      <button type="button" class="seg-b" data-vs="pdf" aria-pressed="true">Contra PDF o fotos</button>
+      <button type="button" class="seg-b" data-vs="wa" aria-pressed="false">Contra WhatsApp a mano</button>
+    </div>
+    <div class="comp" id="comp" data-vs="pdf" role="table" aria-label="Comparación de opciones">
+      <div class="comp-f comp-cab" role="row">
+        <span role="columnheader" class="comp-q"></span>
+        <span role="columnheader">PDF o fotos sueltas</span>
+        <span role="columnheader">Catálogo de WhatsApp actualizado a mano</span>
+        <span role="columnheader" class="comp-yo">Tu catálogo conectado</span>
+      </div>
+      <div class="comp-f" role="row"><span role="rowheader" class="comp-q">Se actualiza solo con tu sistema</span><span role="cell" data-col="PDF o fotos sueltas">No</span><span role="cell" data-col="Catálogo de WhatsApp a mano">No. Alguien edita cada producto</span><span role="cell" class="comp-yo" data-col="Tu catálogo conectado">Sí, cada 15 minutos</span></div>
+      <div class="comp-f" role="row"><span role="rowheader" class="comp-q">Evita ofrecer lo agotado</span><span role="cell" data-col="PDF o fotos sueltas">No</span><span role="cell" data-col="Catálogo de WhatsApp a mano">Solo si alguien lo oculta a tiempo</span><span role="cell" class="comp-yo" data-col="Tu catálogo conectado">Sí. Puede tardar hasta 15 minutos en marcarlo</span></div>
+      <div class="comp-f" role="row"><span role="rowheader" class="comp-q">Trabajo para mantenerlo al día</span><span role="cell" data-col="PDF o fotos sueltas">Rehacer el archivo y volver a enviarlo</span><span role="cell" data-col="Catálogo de WhatsApp a mano">Editar cada cambio de precio o de stock</span><span role="cell" class="comp-yo" data-col="Tu catálogo conectado">Ninguno extra: usas tu sistema como siempre</span></div>
+      <div class="comp-f" role="row"><span role="rowheader" class="comp-q">Responde preguntas de tus clientes</span><span role="cell" data-col="PDF o fotos sueltas">No</span><span role="cell" data-col="Catálogo de WhatsApp a mano">Respondes tú en el chat</span><span role="cell" class="comp-yo" data-col="Tu catálogo conectado">Sí. Un asistente responde sobre tus productos</span></div>
+      <div class="comp-f" role="row"><span role="rowheader" class="comp-q">Lleva el pedido a tu WhatsApp</span><span role="cell" data-col="PDF o fotos sueltas">El cliente te escribe aparte</span><span role="cell" data-col="Catálogo de WhatsApp a mano">Sí. Ya está dentro de WhatsApp</span><span role="cell" class="comp-yo" data-col="Tu catálogo conectado">Sí. El mensaje llega armado</span></div>
+      <div class="comp-f" role="row"><span role="rowheader" class="comp-q">Costo</span><span role="cell" data-col="PDF o fotos sueltas">Gratis</span><span role="cell" data-col="Catálogo de WhatsApp a mano">Gratis</span><span role="cell" class="comp-yo" data-col="Tu catálogo conectado">Tiene un costo. Mira los paquetes</span></div>
+    </div>
+
+    <form class="calc" id="calc">
+      <h3>¿Cuánto tiempo se te va en responder "¿tienes stock?"</h3>
+      <div class="calc-in">
+        <div class="campo">
+          <label for="calcVeces">Veces al día que te lo preguntan: <output id="calcVecesO" for="calcVeces">15</output></label>
+          <input id="calcVeces" type="range" min="0" max="60" step="1" value="15">
+        </div>
+        <div class="campo">
+          <label for="calcMin">Minutos que te toma revisar y responder: <output id="calcMinO" for="calcMin">4</output></label>
+          <input id="calcMin" type="range" min="1" max="15" step="1" value="4">
+        </div>
+      </div>
+      <p class="calc-res" id="calcRes" aria-live="polite"></p>
+      <p class="calc-eq" id="calcEq"></p>
+      <div class="jornadas" id="calcJor" aria-hidden="true"></div>
+      <p class="nota">Es una estimación con tus propios números, contando 30 días de atención. No es una promesa de ahorro.</p>
+      <a class="btn btn-wa" data-wa="calculadora" href="#cierre"><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg>Escribir por WhatsApp</a>
+    </form>
+  </div>
+</section>
+
+<!-- Testimonios futuros (oculto mientras config.js no tenga ninguno) -->
+<section id="testimonios" class="sec" data-sec="Lo que dicen" hidden>
+  <div class="cont">
+    <h2>Lo que dicen quienes ya lo usan</h2>
+    <div class="testis" id="testis"></div>
+  </div>
+</section>
+
+<!-- 11. PAQUETES -->
+<section id="paquetes" class="sec" data-sec="Paquetes">
+  <div class="cont">
+    <h2>Paquetes</h2>
+    <p class="bajada">El catálogo es la base. Los reportes y el conteo son extras que puedes sumar cuando quieras.</p>
+    <div class="paqs" id="paqs"></div>
+    <p class="nota">Forma de pago: <span data-cfg="formaDePago" data-alt="la acordamos por WhatsApp"></span></p>
+  </div>
+</section>
+
+<!-- 12. PREGUNTAS -->
+<section id="preguntas" class="sec sec-blanca" data-sec="Preguntas frecuentes">
+  <div class="cont cont-ang">
+    <h2>Preguntas frecuentes</h2>
+    <p class="bajada">¿Qué te preocupa? Toca y vas directo a la respuesta.</p>
+    <div class="miedos" id="miedos">
+      <button type="button" class="chip" data-faq="13">Que sea caro</button>
+      <button type="button" class="chip" data-faq="8">Que sea complicado</button>
+      <button type="button" class="chip" data-faq="3">Cambiar de sistema</button>
+      <button type="button" class="chip" data-faq="2">Que no sirva con mi sistema</button>
+      <button type="button" class="chip" data-faq="6">Quién ve mis datos</button>
+      <button type="button" class="chip" data-faq="14">Que no me sirva</button>
+    </div>
+    <div class="faq">
+      <details><summary>¿Qué necesito para tenerlo?</summary><p>Tres cosas: un sistema contable que permita la conexión, tus productos cargados en ese sistema y tu número de WhatsApp. Los productos aparecen con el nombre que tienen en tu sistema. Las fotos no salen del sistema contable: me pasas las que tengas, y lo que no tenga foto se muestra con una imagen genérica.</p></details>
+      <details><summary>¿Funciona con mi sistema?</summary><p>Con Contífico, sí: ya funciona. Con otros sistemas contables o de inventario depende de que permitan que otro programa lea tus productos. Lo revisamos juntos antes de empezar y te digo con claridad si se puede.</p></details>
+      <details><summary>¿Tengo que cambiar mi sistema o mi forma de vender?</summary><p>No. Sigues facturando y vendiendo igual. El catálogo solo lee de tu sistema.</p></details>
+      <details><summary>¿Cada cuánto se actualiza?</summary><p>Solo, cada 15 minutos. Eso significa que una venta puede tardar hasta 15 minutos en verse reflejada en el catálogo. No es instantáneo; por eso el catálogo muestra la hora de la última actualización. Si en ese rato alguien pide algo que se acaba de vender, el pedido igual te llega por WhatsApp y tú confirmas antes de cerrar la venta.</p></details>
+      <details><summary>¿Mis clientes ven mis costos?</summary><p>No. El catálogo publica nombre, categoría, precio de venta, disponibilidad, fotos y descripción de cada producto. No publica costos, utilidad ni proveedores.</p></details>
+      <details><summary>¿Quién ve mis datos y cómo se cuidan?</summary><p>La conexión lee tus productos, precios y unidades, y con eso se publica el catálogo que ven tus clientes. Las preguntas que ellos le escriben al asistente pasan por un servicio de inteligencia artificial para poder responderlas, y el catálogo lleva un conteo de visitas. La clave de conexión con tu sistema: <span data-cfg="respuestas.clave" data-alt="te explico por WhatsApp cómo se guarda antes de empezar."></span></p></details>
+      <details><summary>¿Cómo cobro a mis clientes?</summary><p>Como ya lo haces hoy. El pedido te llega por WhatsApp y tú cierras la venta: efectivo, transferencia, tarjeta o lo que uses. No hay pasarela de pagos de por medio.</p></details>
+      <details><summary>¿Necesito saber de tecnología?</summary><p>No. Yo armo el catálogo y me encargo de la parte técnica. Tú sigues usando tu sistema como siempre.</p></details>
+      <details><summary>¿Sirve si tengo un solo local?</summary><p>Sí. El catálogo, el asistente y los pedidos funcionan igual. Lo único que aplica solo cuando hay varios locales son las sugerencias de traslado del reporte.</p></details>
+      <details><summary>¿Qué pasa si se cae el internet o mi sistema?</summary><p>El catálogo es una página ya publicada: si tu sistema o el internet de tu local fallan, tus clientes siguen viendo la última actualización, con su hora. Cuando la conexión vuelve, se pone al día solo.</p></details>
+      <details><summary>¿Cuánto demora tenerlo listo?</summary><p><span data-cfg="respuestas.cuantoDemora" data-alt="Te lo confirmo por WhatsApp según tu caso."></span></p></details>
+      <details><summary>¿Puedo pedir cambios de diseño?</summary><p><span data-cfg="respuestas.cambiosDiseno" data-alt="Te lo confirmo por WhatsApp según tu caso."></span></p></details>
+      <details><summary>¿Cuánto cuesta y cómo se paga?</summary><p><span data-cfg="respuestas.costo" data-alt="Te lo cotizo por WhatsApp según tu negocio."></span></p></details>
+      <details><summary>¿Puedo cancelar?</summary><p><span data-cfg="respuestas.cancelar" data-alt="Te lo confirmo por WhatsApp antes de empezar."></span></p></details>
+      <details><summary>¿Puedo compartirlo en Instagram y en WhatsApp?</summary><p>Sí. Es un enlace como cualquier otro: lo pones en la biografía de tu Instagram, en tus estados y lo mandas por WhatsApp. Al compartirlo por WhatsApp se ve con una vista previa.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- 13. CIERRE -->
+<section id="cierre" class="cierre" data-sec="Cierre">
+  <div class="cont cont-ang">
+    <h2>Mientras atiendes a un cliente, tu catálogo atiende a los demás.</h2>
+    <p class="bajada">Escríbeme, cuéntame qué vendes y qué sistema usas, y te digo si se puede conectar.</p>
+    <a class="btn btn-wa btn-gr" data-wa="cierre" href="#cierre"><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg>Escribir por WhatsApp</a>
+    <div class="recorrido" id="recorrido" hidden>
+      <p class="recorrido-t" id="recT" role="status"></p>
+      <ul class="recorrido-l" id="recL"></ul>
+      <p class="nota nota-clara">Lo que probaste se agrega a tu mensaje, para que te responda sobre eso. Puedes borrarlo antes de enviar.</p>
+    </div>
+    <dl class="datos">
+      <div><dt>Te atiende</dt><dd><span data-cfg="contacto.nombre"></span><span data-fila> · <span data-cfg="contacto.presentacion" data-alt=""></span></span></dd></div>
+      <div data-fila><dt>Desde</dt><dd><span data-cfg="contacto.ciudad" data-alt=""></span></dd></div>
+      <div data-fila><dt>Horario</dt><dd><span data-cfg="contacto.horario" data-alt=""></span></dd></div>
+    </dl>
+  </div>
+</section>
+
+</main>
+
+<footer class="pie">
+  <div class="cont">
+    <p><span data-marca>Catalog</span>. Las cifras, los tiempos, los negocios y las escenas de las demostraciones son ilustrativos.</p>
+    <p>Tipografías Bricolage Grotesque y Hanken Grotesk, con licencia abierta OFL.</p>
+  </div>
+</footer>
+
+<!-- Barra inferior de WhatsApp en celular (aparece después de la portada) -->
+<div class="barra-wa" id="barraWa" hidden>
+  <a class="btn btn-wa" data-wa="general" href="#cierre"><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg>Escribir por WhatsApp</a>
+</div>
+
+<!-- Recorrido guiado -->
+<div class="tour" id="tour" hidden role="region" aria-label="Recorrido guiado">
+  <p class="tour-h" id="tourHora"></p>
+  <p class="tour-t" id="tourTxt" aria-live="polite"></p>
+  <div class="tour-b">
+    <span class="tour-n" id="tourN"></span>
+    <button type="button" class="btn btn-sec btn-ch" id="tourSalir">Salir del recorrido</button>
+    <button type="button" class="btn btn-pri btn-ch" id="tourSig">Siguiente</button>
+  </div>
+</div>
+
+<!-- Modo presentación -->
+<div class="pres" id="pres" hidden aria-live="polite"></div>
+
+<!-- Detalle de producto -->
+<dialog class="det" id="det" aria-labelledby="detN">
+  <button type="button" class="x" id="detX" aria-label="Cerrar"><svg class="ico" aria-hidden="true"><use href="#i-cerrar"/></svg></button>
+  <div class="det-3d" id="det3d" tabindex="0" role="img" aria-label="Vista 3D del producto. Arrastra o usa las flechas para girarla.">
+    <div class="caja3d" id="caja3d">
+      <div class="c3 c3-f" id="c3f"></div><div class="c3 c3-b" id="c3b"></div>
+      <div class="c3 c3-l"></div><div class="c3 c3-r"></div><div class="c3 c3-t"></div><div class="c3 c3-d"></div>
+    </div>
+    <span class="det-gira">Arrastra para girar</span>
+  </div>
+  <div class="det-info">
+    <p class="det-cat" id="detC"></p>
+    <h3 id="detN"></h3>
+    <p class="det-desc" id="detD"></p>
+    <div class="det-fila">
+      <button type="button" class="tag-precio" id="detP" aria-describedby="globo"></button>
+      <button type="button" class="tag-stock" id="detS" aria-describedby="globo"></button>
+    </div>
+    <p class="det-ef" id="detE" hidden></p>
+    <p class="globo" id="globo" role="status" aria-live="polite">Toca el precio o la disponibilidad para ver cómo te sirve.</p>
+    <button type="button" class="btn btn-pri" id="detAdd">Agregar al pedido</button>
+    <button type="button" class="btn btn-wa" id="detW"><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg>Pedir por WhatsApp</button>
+    <div class="det-msg" id="detMsg" hidden>
+      <p class="det-msg-t">Esto es lo que te llega a ti:</p>
+      <p class="burbuja" id="detMsgB"></p>
+    </div>
+  </div>
+</dialog>
+
+<!-- Modo vitrina -->
+<dialog class="vit" id="vit" aria-label="Modo vitrina: así se vería en la pantalla de tu local">
+  <div class="vit-esc" id="vitEsc">
+    <button type="button" class="btn vit-x" id="vitX">Salir del modo vitrina</button>
+    <div class="vit-cab"><span class="cat-logo" id="vitLogo" aria-hidden="true">TT</span><strong id="vitNombre">Tu Tienda</strong><span class="vit-al" id="vitAl">Precios al día</span></div>
+    <div class="vit-prod" id="vitProd" aria-live="off"></div>
+    <aside class="vit-qr">
+      <div class="qr" id="vitQr"></div>
+      <p>Escanea y pide por WhatsApp</p>
+    </aside>
+    <p class="vit-pie">Cuando cambia un precio en tu sistema, cambia solo en esta pantalla.</p>
+  </div>
+</dialog>
+
+<script src="config.js"></script>
+<script src="assets/js/productos.js" defer></script>
+<script src="assets/js/app.js" defer></script>
+<script src="assets/js/demos.js" defer></script>
+<script src="assets/js/reporte.js" defer></script>
+<script src="assets/js/extras.js" defer></script>
+</body>
+</html>

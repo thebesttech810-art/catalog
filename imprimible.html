@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es-EC">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Hoja para dejar en el local (media página A4)</title>
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/estilos.css">
+<style>
+  @page{size:A4 portrait;margin:0}
+  body{background:#DDE3EE;padding:20px}
+  .ayuda{max-width:210mm;margin:0 auto 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .hoja{width:210mm;height:148.5mm;background:#fff;margin:0 auto;padding:13mm 14mm;display:grid;grid-template-columns:1fr 52mm;gap:10mm;align-content:space-between;border-bottom:1px dashed #5B6078;overflow:hidden}
+  .hoja h1{font-size:30pt;line-height:1.02;grid-column:1/-1}
+  .hoja .sub{font-size:12.5pt;margin-top:3mm;max-width:none;grid-column:1/-1}
+  .hoja ul{display:grid;gap:3.2mm;font-size:12pt;align-content:center}
+  .hoja li{padding-left:8mm;position:relative}
+  .hoja li::before{content:"";position:absolute;left:0;top:1.6mm;width:5mm;height:3.2mm;background:var(--etiqueta);clip-path:polygon(1.6mm 0,100% 0,100% 100%,1.6mm 100%,0 50%);outline:.3mm solid var(--tinta)}
+  .hoja li b{font-family:var(--tit)}
+  .qrc{text-align:center;font-weight:700;font-size:10.5pt;display:grid;gap:2mm;align-content:center}
+  .qrc .qr{border:.6mm solid var(--tinta);border-radius:3mm;padding:3mm;font-size:8pt}
+  .pieh{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;font-size:10.5pt;border-top:.5mm solid var(--tinta);padding-top:3mm;gap:6mm}
+  .pieh .marca{font-size:13pt;min-height:0}
+  .corte{max-width:210mm;margin:6px auto;font-size:.8rem;color:var(--suave);text-align:center}
+  @media print{body{background:#fff;padding:0}.ayuda,.corte{display:none}.hoja{margin:0}}
+</style>
+</head>
+<body>
+<div class="ayuda">
+  <button type="button" class="btn btn-pri" onclick="window.print()">Imprimir</button>
+  <span>Imprime en A4 vertical, sin márgenes y con "gráficos de fondo" activado. La hoja ocupa la mitad de arriba: corta por la línea punteada.</span>
+</div>
+
+<div class="hoja">
+  <div style="grid-column:1/-1">
+    <h1>Tu catálogo se actualiza solo. Tú sigues vendiendo.</h1>
+    <p class="sub">Una vitrina digital conectada a tu sistema contable, con pedidos que llegan a tu WhatsApp.</p>
+  </div>
+  <ul>
+    <li><b>Siempre al día.</b> Precios y stock salen de tu sistema cada 15 minutos. Nadie sube productos a mano.</li>
+    <li><b>Responde por ti.</b> Un asistente contesta las preguntas de tus clientes sobre tus productos.</li>
+    <li><b>Yo lo armo.</b> Tú no cambias de sistema ni tu forma de vender.</li>
+  </ul>
+  <div class="qrc">
+    <div class="qr" id="qr"></div>
+    <span>Escanea y pruébalo con el nombre de tu negocio</span>
+  </div>
+  <div class="pieh">
+    <span class="marca"><span class="marca-tag" aria-hidden="true"></span><span id="marca">Catalog</span></span>
+    <span id="contacto"></span>
+  </div>
+</div>
+<p class="corte">Corta por la línea punteada</p>
+
+<script src="config.js"></script>
+<script src="assets/js/qrcode.js"></script>
+<script>
+(function () {
+  var C = window.CONFIG || {}, qr = document.getElementById("qr");
+  document.getElementById("marca").textContent = C.marca || "Catalog";
+  var tel = String(C.whatsapp || "").replace(/\D/g, "");
+  document.getElementById("contacto").textContent = ((C.contacto && C.contacto.nombre) || "") + " · WhatsApp: " + (tel ? "+" + tel : "[POR CONFIRMAR: número de WhatsApp]");
+  if (/^https?:\/\//i.test(C.paginaUrl || "")) {
+    var q = qrcode(0, "M"); q.addData(C.paginaUrl); q.make();
+    qr.innerHTML = q.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
+  } else {
+    qr.textContent = "Aquí irá tu código QR. [POR CONFIRMAR: dirección pública]";
+  }
+})();
+</script>
+</body>
+</html>

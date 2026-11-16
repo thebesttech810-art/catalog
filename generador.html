@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="es-EC">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Generador de enlaces (uso interno)</title>
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/estilos.css">
+<style>
+  body{background:#fff}
+  .gen{max-width:720px;margin:0 auto;padding:28px 20px 60px;display:grid;gap:18px}
+  .gen h1{font-size:1.9rem}
+  .caja{border:2px solid var(--tinta);border-radius:var(--r2);padding:16px;display:grid;gap:10px;background:var(--vidrio)}
+  .caja h2{font-size:1.1rem}
+  .sal{background:#fff;border:1px solid var(--linea);border-radius:var(--r1);padding:12px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:.95rem;min-height:3em}
+  .fila{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .ok{font-weight:700;color:var(--sem-verde);font-size:.9rem}
+  .aviso-int{background:var(--etiqueta);padding:8px 12px;border-radius:var(--r1);font-weight:700;font-size:.9rem}
+</style>
+</head>
+<body>
+<main class="gen">
+  <p class="aviso-int">Herramienta interna. No está enlazada desde la página y no se envía nada: tú copias y mandas cada mensaje.</p>
+  <h1>Generador de enlaces y mensajes</h1>
+
+  <form class="caja" id="g" autocomplete="off">
+    <div class="campo"><label for="gBase">Dirección pública de la página</label><input id="gBase" type="url" placeholder="https://…"></div>
+    <div class="campo"><label for="gNeg">Nombre del negocio (máximo 40 caracteres)</label><input id="gNeg" type="text" maxlength="40"></div>
+    <div class="campo"><label for="gRub">Rubro</label>
+      <select id="gRub">
+        <option value="celulares">Celulares y tecnología</option>
+        <option value="accesorios">Accesorios</option>
+        <option value="electrodomesticos">Electrodomésticos</option>
+        <option value="videojuegos">Videojuegos</option>
+        <option value="otro">Otro</option>
+      </select>
+    </div>
+    <div class="campo"><label for="gTel">WhatsApp del negocio (opcional, con código de país, solo números)</label><input id="gTel" type="tel" inputmode="numeric" placeholder="593…"></div>
+  </form>
+
+  <section class="caja"><h2>Enlace personalizado</h2><p class="sal" id="oLink"></p>
+    <div class="fila"><button type="button" class="btn btn-pri btn-ch" data-copiar="oLink">Copiar enlace</button><a class="btn btn-sec btn-ch" id="oAbrir" target="_blank" rel="noopener">Probar el enlace</a><span class="ok" role="status"></span></div></section>
+  <section class="caja"><h2>1. Primer contacto</h2><p class="sal" id="o1"></p>
+    <div class="fila"><button type="button" class="btn btn-pri btn-ch" data-copiar="o1">Copiar mensaje</button><a class="btn btn-wa btn-ch" data-abrir="o1" target="_blank" rel="noopener">Abrir en WhatsApp</a><span class="ok" role="status"></span></div></section>
+  <section class="caja"><h2>2. Después de visitar su local</h2><p class="sal" id="o2"></p>
+    <div class="fila"><button type="button" class="btn btn-pri btn-ch" data-copiar="o2">Copiar mensaje</button><a class="btn btn-wa btn-ch" data-abrir="o2" target="_blank" rel="noopener">Abrir en WhatsApp</a><span class="ok" role="status"></span></div></section>
+  <section class="caja"><h2>3. Seguimiento a los pocos días</h2><p class="sal" id="o3"></p>
+    <div class="fila"><button type="button" class="btn btn-pri btn-ch" data-copiar="o3">Copiar mensaje</button><a class="btn btn-wa btn-ch" data-abrir="o3" target="_blank" rel="noopener">Abrir en WhatsApp</a><span class="ok" role="status"></span></div></section>
+
+  <p class="nota">Buenas prácticas: pocos mensajes al día, cada uno revisado y personalizado. Si alguien no quiere recibir más mensajes, no le vuelvas a escribir.</p>
+</main>
+
+<script src="config.js"></script>
+<script>
+(function () {
+  "use strict";
+  var C = window.CONFIG || {}, RUBROS = ["celulares", "accesorios", "electrodomesticos", "videojuegos", "otro"];
+  function $(i) { return document.getElementById(i); }
+  /* Mismo contrato que la página y que el buscador de clientes:
+     ?negocio=<texto, máximo 40, con encodeURIComponent>&rubro=<uno de la lista> */
+  function limpiar(v) { return Array.from(String(v || "").replace(/\s+/g, " ").trim()).slice(0, 40).join("").trim(); }
+  function enlace(base, negocio, rubro) {
+    base = String(base || "").trim().split("#")[0].split("?")[0];
+    rubro = RUBROS.indexOf(rubro) >= 0 ? rubro : "otro";
+    return base + "?negocio=" + encodeURIComponent(limpiar(negocio)) + "&rubro=" + rubro;
+  }
+  window.vvEnlace = enlace;
+  function pintar() {
+    var base = $("gBase").value.trim(), neg = limpiar($("gNeg").value), yo = (C.contacto && C.contacto.nombre) || "Edu";
+    var okBase = /^https?:\/\//i.test(base);
+    var link = okBase ? enlace(base, neg, $("gRub").value) : "";
+    $("oLink").textContent = okBase ? link : "Escribe arriba la dirección pública de la página (empieza con https://).";
+    $("oAbrir").href = link || "#";
+    var n = neg || "tu negocio", l = link || "[enlace]";
+    $("o1").textContent = "Hola, ¿cómo estás? Soy " + yo + ". Vi " + n + " y armé una demostración de cómo se vería su catálogo con precios y stock siempre al día, conectado a su sistema contable. Es esta: " + l + "\n¿Le das una mirada y me cuentas qué te parece?";
+    $("o2").textContent = "Hola, soy " + yo + ". Hoy pasé por " + n + " y me gustó cómo tienen la vitrina. Les dejé armada una demostración de cómo se vería su catálogo en línea, con el stock que se actualiza solo: " + l + "\n¿Con quién podría conversar sobre esto?";
+    $("o3").textContent = "Hola, soy " + yo + " otra vez. Te escribo solo para saber si pudiste ver la demostración de " + n + ": " + l + "\nSi no es el momento, no hay problema y no te escribo más. ¿Te gustaría que te cuente cómo funciona?";
+    var tel = $("gTel").value.replace(/\D/g, "");
+    document.querySelectorAll("[data-abrir]").forEach(function (a) {
+      a.href = "https://wa.me/" + tel + "?text=" + encodeURIComponent($(a.getAttribute("data-abrir")).textContent);
+    });
+  }
+  $("gBase").value = /^https?:\/\//i.test(C.paginaUrl || "") ? C.paginaUrl : "";
+  $("g").addEventListener("input", pintar);
+  $("g").addEventListener("submit", function (e) { e.preventDefault(); });
+  document.querySelectorAll("[data-copiar]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var t = $(b.getAttribute("data-copiar")).textContent, ok = b.parentNode.querySelector(".ok");
+      function listo() { ok.textContent = "Copiado"; setTimeout(function () { ok.textContent = ""; }, 1800); }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(listo, function () { ok.textContent = "Selecciona el texto y cópialo a mano"; });
+      else { var r = document.createRange(); r.selectNodeContents($(b.getAttribute("data-copiar"))); var s = getSelection(); s.removeAllRanges(); s.addRange(r); try { document.execCommand("copy"); listo(); } catch (e) { ok.textContent = "Cópialo a mano"; } }
+    });
+  });
+  pintar();
+})();
+</script>
+</body>
+</html>
