@@ -48,7 +48,7 @@
 .vchips{position:absolute;left:0;top:0;width:100%;aspect-ratio:1/1;pointer-events:none;z-index:2}
 .vchip{position:absolute;display:inline-flex;align-items:center;gap:7px;padding:7px 11px;max-width:calc(100% - 12px);font-family:var(--tit);font-weight:700;font-size:.76rem;line-height:1.1;white-space:nowrap;border-radius:99px;opacity:0;will-change:transform,opacity}
 .vchip .ico{width:1.15em;height:1.15em;flex:none}
-.vchip-a{left:12px;top:-14px;background:var(--tinta);color:#fff;border:2px solid var(--tinta);box-shadow:0 5px 0 rgba(22,24,58,.28);animation:mov-chip-a 12s var(--mov-out) infinite}
+.vchip-a{left:12px;top:-16px;background:var(--tinta);color:#fff;border:2px solid var(--tinta);box-shadow:0 5px 0 rgba(22,24,58,.28);animation:mov-chip-a 12s var(--mov-out) infinite}
 .vchip-p{width:9px;height:9px;border-radius:50%;background:#5DE3A5;flex:none}
 .vchip-b{right:-10px;bottom:14%;padding:8px 14px 8px 26px;border-radius:0;background:var(--etiqueta);color:var(--tinta);clip-path:polygon(14px 0,100% 0,100% 100%,14px 100%,0 50%);animation:mov-chip-b 12s var(--mov-out) infinite}
 .vchip-b::before{content:"";position:absolute;left:12px;top:50%;width:7px;height:7px;margin-top:-3.5px;border-radius:50%;background:var(--vidrio)}
@@ -69,7 +69,9 @@
   .vc-s{display:none}
 }
 @media (min-width:1200px){.vchip-b{right:-48px}}
-.vchips.pausa .vchip,.vchips.pausa .vchip *{animation-play-state:paused}
+/* En celulares de menos de 350 px el aviso «Venta en caja» no cabe junto al botón «Activar sonido»: se omite */
+@media (max-width:349px){.vchip-a{display:none}}
+.vchips.pausa .vchip,.vchips.pausa .vchip *,.vchips.pausa-video .vchip,.vchips.pausa-video .vchip *{animation-play-state:paused}
 /* Cada vuelta dura 12 s: entran de a uno (venta, catálogo, pedido), se quedan unos segundos y se van */
 @keyframes mov-chip-a{
   0%{opacity:0;transform:translate3d(-14px,14px,0) scale(.92)}
@@ -167,7 +169,8 @@
   transition:translate .5s var(--mov-out),opacity .25s,visibility 0s linear .5s;
 }
 .dock.dock-ver{translate:-50% 0;opacity:1;visibility:visible;transition-delay:0s}
-@media (min-width:760px){.dock{display:flex}}
+/* No aparece en celulares acostados (poca altura): taparía demasiado y la cabecera ya tiene el botón de WhatsApp */
+@media (min-width:760px) and (min-height:481px){.dock{display:flex}}
 .dock-up{flex:none;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.12);color:#fff;display:grid;place-items:center;padding:0;transition:transform .15s var(--mov-ui),background-color .15s}
 .dock-up svg{width:20px;height:20px}
 .dock-up:active{transform:scale(.94)}

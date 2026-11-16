@@ -23,6 +23,17 @@
 <meta property="og:image:alt" content="Una etiqueta de stock que cambia sola de 2 disponibles a 1 disponible después de una venta en la caja.">
 <meta name="twitter:card" content="summary_large_image">
 
+<!-- Las dos tipografías se piden desde el inicio (si no, el navegador las descubre tarde, al leer el CSS).
+     Medido en un celular simulado con red lenta (mediana de 5 pruebas): el primer contenido sale unos 0,3 s antes.
+     Solo por internet: al abrir el archivo con doble clic el navegador no deja pedirlas así (ni hace falta)
+     y llenaría la consola de errores. -->
+<script>
+if (/^https?:$/.test(location.protocol)) ["bricolage", "hanken"].forEach(function (n) {
+  var l = document.createElement("link");
+  l.rel = "preload"; l.as = "font"; l.type = "font/woff2"; l.crossOrigin = "anonymous"; l.href = "assets/fonts/" + n + ".woff2";
+  document.head.appendChild(l);
+});
+</script>
 <link rel="stylesheet" href="assets/css/estilos.css">
 <link rel="stylesheet" href="assets/css/movimiento.css">
 </head>
@@ -43,7 +54,7 @@
 
 <header class="cab">
   <div class="cont cab-in">
-    <a class="marca" href="#portada" aria-label="Inicio">
+    <a class="marca" href="#portada" aria-label="Catalog, ir al inicio">
       <span class="marca-tag" aria-hidden="true"></span><span data-marca>Catalog</span>
     </a>
     <a class="btn btn-wa btn-ch" data-wa="general" href="#cierre"><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg>Escribir por WhatsApp</a>
@@ -292,7 +303,7 @@
           <div class="asis-sug" id="asisSug"></div>
           <form class="asis-form" id="asisForm">
             <label class="oculto" for="asisIn">Escribe tu pregunta</label>
-            <input id="asisIn" type="text" maxlength="80" placeholder="Escribe una pregunta" enterkeyhint="send">
+            <input id="asisIn" type="text" maxlength="80" placeholder="Tu pregunta" enterkeyhint="send">
             <button type="submit" class="btn btn-pri">Preguntar</button>
           </form>
         </div>
@@ -626,7 +637,7 @@
   </div>
 </dialog>
 
-<script src="config.js"></script>
+<script src="config.js" defer></script>
 <script src="assets/js/productos.js" defer></script>
 <script src="assets/js/app.js" defer></script>
 <script src="assets/js/demos.js" defer></script>

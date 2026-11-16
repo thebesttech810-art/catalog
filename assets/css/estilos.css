@@ -925,3 +925,29 @@ a.enlace{display:inline-flex;align-items:center}
 .video-ctrl{gap:8px}
 .video-t{font-size:.8rem}
 @media (max-width:359px){.video-t{display:none}}
+
+/* =====================================================================
+   RONDA 7: revisión de celular y escritorio
+   ===================================================================== */
+/* «Activar sonido» sale por el borde de arriba del video, como una etiqueta.
+   Antes caía encima del título que dibuja el video y lo tapaba en celulares de 360 px. */
+.video-marco{overflow:visible}
+.video-marco canvas,.video-fin{border-radius:21px}
+.video-marco:fullscreen canvas,.video-marco:fullscreen .video-fin{border-radius:0}
+.video-pill{top:-22px;right:12px}
+.video-marco:fullscreen .video-pill{top:14px;right:14px}
+@media (max-width:399px){.video-pill{font-size:.84rem;gap:6px;padding:4px 13px 4px 10px}}
+/* «Asistente» sobre el fondo amarillo: de 4,48:1 a 6:1 */
+.msj-asi small{color:#464B68}
+/* Mejores cortes de línea: botones equilibrados y sin una sola palabra suelta al final de los párrafos */
+.btn{text-wrap:balance}
+p,li{text-wrap:pretty}
+/* Al tocar en el celular: un destello del color de la marca en vez del gris del navegador */
+html{-webkit-tap-highlight-color:rgba(58,54,224,.16)}
+/* El detalle y la vitrina no arrastran la página de atrás al llegar al final de su contenido */
+dialog{overscroll-behavior:contain}
+/* Alto contraste de Windows: ahí los fondos se cambian por los del sistema y la opción elegida ya no se
+   distinguiría solo por su color de fondo; se le agrega un contorno */
+@media (forced-colors:active){
+  .seg-b[aria-pressed="true"],.chip[aria-pressed="true"],.video-b[aria-pressed="true"],.vf.activo,.rep-tab[aria-selected="true"]{outline:3px solid Highlight;outline-offset:-3px}
+}

@@ -64,15 +64,19 @@
     e.classList.remove("rev", "rev-in");
     e.style.transitionDelay = "";
   }
-  function iniciarRev() {
-    if (!hayIO || reducido()) return;
+  /* Qué partes empiezan más abajo de la pantalla. Se mide antes de tocar nada (ver iniciar). */
+  function medirRev() {
+    if (!hayIO || reducido()) return [];
     var h = window.innerHeight;
-    var lista = todos(SEL_REV).filter(function (e) {
+    return todos(SEL_REV).filter(function (e) {
       if (e.closest("[hidden]")) return false;
       /* En pantallas grandes la lista de pasos se vuelve una pila de tarjetas fijas: no se toca. */
       if (mqPila.matches && e.classList.contains("pasos3")) return false;
       return e.getBoundingClientRect().top > h;
     });
+  }
+  function iniciarRev(lista) {
+    if (!lista.length) return;
     rev.io = new IntersectionObserver(function (es) {
       var entran = es.filter(function (x) { return x.isIntersecting; })
         .sort(function (a, b) { return a.boundingClientRect.top - b.boundingClientRect.top; });
@@ -107,6 +111,17 @@
       { el: c.querySelector(".vchip-b"), v: 16 },
       { el: c.querySelector(".vchip-c"), v: -12 }
     ];
+    /* Si pausas el video, los avisos se quedan quietos con él y siguen cuando le das play.
+       Si el navegador no deja que el video arranque solo, los avisos corren como siempre. */
+    var btn = $("vidBtn");
+    if (btn && window.MutationObserver) {
+      var arranco = btn.classList.contains("en-curso");
+      new MutationObserver(function () {
+        var corre = btn.classList.contains("en-curso");
+        if (corre) arranco = true;
+        c.classList.toggle("pausa-video", arranco && !corre);
+      }).observe(btn, { attributes: true, attributeFilter: ["class"] });
+    }
     /* Fuera de la pantalla los avisos se detienen (no gastan batería) */
     var portada = $("portada");
     if (hayIO && portada) {
@@ -145,7 +160,11 @@
     });
   }
   /* El número del tercer paso cuenta hasta 15 al llegar a él */
-  function iniciarCuenta() {
+  function medirCuenta() {
+    var el = document.querySelector("#como-funciona .p3-15");
+    return !!el && el.getBoundingClientRect().top < window.innerHeight;
+  }
+  function iniciarCuenta(yaVisto) {
     var el = document.querySelector("#como-funciona .p3-15");
     if (!el || reducido() || !hayIO) return;
     var m = /^(.*?)(\d+)(.*)$/.exec(el.textContent);
@@ -155,7 +174,7 @@
     el.appendChild(document.createTextNode(m[1]));
     el.appendChild(num);
     el.appendChild(document.createTextNode(m[3]));
-    if (el.getBoundingClientRect().top < window.innerHeight) return;   /* ya a la vista: se deja el número final */
+    if (yaVisto) return;   /* ya a la vista: se deja el número final */
     num.textContent = "0";
     var io = new IntersectionObserver(function (es) {
       if (!es[0].isIntersecting) return;
@@ -211,27 +230,36 @@
      --------------------------------------------------------------- */
   function iniciarSegs() {
     if (reducido() || !window.MutationObserver) return;
-    todos(".seg").forEach(function (seg) {
-      var ind = crear("span", "seg-ind"), listo = false;
+    var segs = todos(".seg").map(function (seg) {
+      var ind = crear("span", "seg-ind");
       ind.setAttribute("aria-hidden", "true");
       seg.insertBefore(ind, seg.firstChild);
       seg.classList.add("con-ind");
-      function mover() {
-        var b = seg.querySelector('.seg-b[aria-pressed="true"]');
-        if (!b || !b.offsetWidth) return;
-        if (!listo) {
-          /* la primera vez se coloca sin recorrido */
-          listo = true;
-          ind.style.transition = "none";
-          requestAnimationFrame(function () { requestAnimationFrame(function () { ind.style.transition = ""; }); });
-        }
-        ind.style.width = b.offsetWidth + "px";
-        ind.style.transform = "translateX(" + b.offsetLeft + "px)";
-      }
-      new MutationObserver(mover).observe(seg, { attributes: true, subtree: true, attributeFilter: ["aria-pressed"] });
-      if ("ResizeObserver" in window) new ResizeObserver(mover).observe(seg);
-      mover();
+      return { seg: seg, ind: ind, listo: false };
     });
+    function medir(s) {
+      var b = s.seg.querySelector('.seg-b[aria-pressed="true"]');
+      return b && b.offsetWidth ? { w: b.offsetWidth, l: b.offsetLeft } : null;
+    }
+    function poner(s, m) {
+      if (!m) return;
+      if (!s.listo) {
+        /* la primera vez se coloca sin recorrido */
+        s.listo = true;
+        s.ind.style.transition = "none";
+        requestAnimationFrame(function () { requestAnimationFrame(function () { s.ind.style.transition = ""; }); });
+      }
+      s.ind.style.width = m.w + "px";
+      s.ind.style.transform = "translateX(" + m.l + "px)";
+    }
+    segs.forEach(function (s) {
+      var mover = function () { poner(s, medir(s)); };
+      new MutationObserver(mover).observe(s.seg, { attributes: true, subtree: true, attributeFilter: ["aria-pressed"] });
+      if ("ResizeObserver" in window) new ResizeObserver(mover).observe(s.seg);
+    });
+    /* Primera colocación: todas las lecturas juntas y después todas las escrituras */
+    var medidas = segs.map(medir);
+    segs.forEach(function (s, i) { poner(s, medidas[i]); });
   }
 
   /* ---------------------------------------------------------------
@@ -379,11 +407,13 @@
 
   function iniciar() {
     cab = document.querySelector(".cab");
+    /* Primero se mide todo y después se escribe: así el navegador calcula la página una vez y no varias */
+    var porRevelar = medirRev(), cuentaVista = medirCuenta();
     iniciarHero();
-    iniciarRev();
+    iniciarRev(porRevelar);
     iniciarPila();
     iniciarRiel();
-    iniciarCuenta();
+    iniciarCuenta(cuentaVista);
     iniciarReal();
     iniciarSegs();
     iniciarDock();
