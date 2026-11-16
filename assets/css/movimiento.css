@@ -1,0 +1,188 @@
+/* =====================================================================
+   MOVIMIENTO
+   Capa de animaciones de la página. Se inspira en cómo se mueven las
+   páginas de producto modernas: entradas escalonadas, piezas que flotan a
+   distinta velocidad al desplazarte, tarjetas que se apilan y una barra
+   flotante que te dice dónde estás.
+
+   Es una capa aparte. Para quitarla basta con borrar este archivo,
+   movimiento.js y sus dos líneas en index.html: la página vuelve a quedar
+   como estaba.
+
+   Reglas que sigue todo lo de aquí:
+   - Solo se animan transform y opacity (más algún color en piezas pequeñas).
+   - Curvas de salida rápida: arrancan ágiles y se asientan.
+   - Todo se apaga o queda quieto con «reducir movimiento».
+   ===================================================================== */
+:root{
+  --mov-out:cubic-bezier(.16,1,.3,1);      /* entradas grandes */
+  --mov-ui:cubic-bezier(.23,1,.32,1);      /* controles pequeños */
+}
+
+/* ---------- Cabecera de vidrio al desplazarte ---------- */
+.cab{transition:background-color .3s var(--mov-ui),box-shadow .3s var(--mov-ui)}
+.cab.cab-esc{
+  background:rgba(238,242,247,.92);
+  box-shadow:0 8px 24px -14px rgba(22,24,58,.35);
+  -webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4);
+}
+
+/* ---------- Portada: entrada escalonada ---------- */
+@media (prefers-reduced-motion:no-preference){
+  .portada .saludo{animation:mov-sube .7s var(--mov-out) backwards}
+  .portada h1{animation:mov-sube .9s var(--mov-out) .04s backwards}
+  .portada .apoyo{animation:mov-sube .8s var(--mov-out) .16s backwards}
+  .portada .video{animation:mov-marco 1.05s var(--mov-out) .2s backwards}
+  .portada .portada-acc{animation:mov-sube .8s var(--mov-out) .3s backwards}
+  .portada .paraquien{animation:mov-sube .8s var(--mov-out) .4s backwards}
+}
+@keyframes mov-sube{from{opacity:0;transform:translate3d(0,28px,0)}}
+@keyframes mov-marco{from{opacity:0;transform:translate3d(0,52px,0) scale(.96)}}
+
+/* ---------- Portada: avisos que flotan alrededor del video ----------
+   Cuentan la historia de la página: una venta en la caja, el catálogo que
+   se entera y el pedido que llega al WhatsApp. Son decorativos. */
+.video{position:relative}
+/* El video arranca solo, así que los avisos nunca se esconden: van sobre los bordes del marco,
+   casi todos por fuera, para tapar lo menos posible de lo que se cuenta dentro. */
+.vchips{position:absolute;left:0;top:0;width:100%;aspect-ratio:1/1;pointer-events:none;z-index:2}
+.vchip{position:absolute;display:inline-flex;align-items:center;gap:7px;padding:7px 11px;max-width:calc(100% - 12px);font-family:var(--tit);font-weight:700;font-size:.76rem;line-height:1.1;white-space:nowrap;border-radius:99px;opacity:0;will-change:transform,opacity}
+.vchip .ico{width:1.15em;height:1.15em;flex:none}
+.vchip-a{left:12px;top:-14px;background:var(--tinta);color:#fff;border:2px solid var(--tinta);box-shadow:0 5px 0 rgba(22,24,58,.28);animation:mov-chip-a 12s var(--mov-out) infinite}
+.vchip-p{width:9px;height:9px;border-radius:50%;background:#5DE3A5;flex:none}
+.vchip-b{right:-10px;bottom:14%;padding:8px 14px 8px 26px;border-radius:0;background:var(--etiqueta);color:var(--tinta);clip-path:polygon(14px 0,100% 0,100% 100%,14px 100%,0 50%);animation:mov-chip-b 12s var(--mov-out) infinite}
+.vchip-b::before{content:"";position:absolute;left:12px;top:50%;width:7px;height:7px;margin-top:-3.5px;border-radius:50%;background:var(--vidrio)}
+.vchip-t{display:none;font-weight:600;opacity:.75}
+.vc-l{display:none}
+.vchip-val{display:grid}
+.vchip-val b{grid-area:1/1;font-weight:800;font-variant-numeric:tabular-nums}
+.vchip-val .va{animation:mov-va 12s var(--mov-out) infinite}
+.vchip-val .vb{opacity:0;animation:mov-vb 12s var(--mov-out) infinite}
+.vchip-c{left:-10px;bottom:14%;background:var(--wa);color:var(--wa-txt);border:2px solid var(--tinta);box-shadow:0 5px 0 rgba(22,24,58,.28);animation:mov-chip-c 12s var(--mov-out) infinite}
+/* En pantallas grandes caben el texto completo y los avisos van casi por fuera del marco */
+@media (min-width:760px){
+  .vchip{font-size:.86rem;padding:9px 14px;gap:8px}
+  .vchip-a{left:16px;top:-20px}
+  .vchip-b{right:-24px;top:44%;bottom:auto;padding:10px 18px 10px 30px}
+  .vchip-c{left:-34px;bottom:18%}
+  .vchip-t,.vc-l{display:inline}
+  .vc-s{display:none}
+}
+@media (min-width:1200px){.vchip-b{right:-48px}}
+.vchips.pausa .vchip,.vchips.pausa .vchip *{animation-play-state:paused}
+/* Cada vuelta dura 12 s: entran de a uno (venta, catálogo, pedido), se quedan unos segundos y se van */
+@keyframes mov-chip-a{
+  0%{opacity:0;transform:translate3d(-14px,14px,0) scale(.92)}
+  4%,62%{opacity:1;transform:none}
+  67%,100%{opacity:0;transform:translate3d(0,-8px,0) scale(.96)}
+}
+@keyframes mov-chip-b{
+  0%,16%{opacity:0;transform:translate3d(14px,14px,0) scale(.92)}
+  21%,64%{opacity:1;transform:none}
+  69%,100%{opacity:0;transform:translate3d(0,-8px,0) scale(.96)}
+  0%,27%{background-color:var(--etiqueta)}
+  31%,100%{background-color:#FFB55A}
+}
+@keyframes mov-chip-c{
+  0%,30%{opacity:0;transform:translate3d(-14px,14px,0) scale(.92)}
+  35%,66%{opacity:1;transform:none}
+  71%,100%{opacity:0;transform:translate3d(0,-8px,0) scale(.96)}
+}
+@keyframes mov-va{0%,27%{opacity:1;transform:none}31%,100%{opacity:0;transform:translate3d(0,-9px,0)}}
+@keyframes mov-vb{0%,27%{opacity:0;transform:translate3d(0,9px,0)}31%,100%{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.vchips{display:none}}
+
+/* ---------- Entradas al llegar a cada parte de la página ---------- */
+@media (prefers-reduced-motion:no-preference){
+  .rev{opacity:0;transform:translate3d(0,28px,0);transition:opacity .7s var(--mov-out),transform .8s var(--mov-out)}
+  .rev.rev-in{opacity:1;transform:none}
+}
+
+/* ---------- Controles con pastilla que se desliza ---------- */
+.seg.con-ind{position:relative}
+.seg.con-ind .seg-b{position:relative;z-index:1;transition:color .2s .05s}
+.seg.con-ind .seg-b[aria-pressed="true"]{background:transparent}
+.seg-ind{position:absolute;left:0;top:4px;bottom:4px;width:0;border-radius:7px;background:var(--tinta);transition:transform .3s var(--mov-ui),width .3s var(--mov-ui)}
+
+/* ---------- Cómo funciona: tarjetas que se apilan (solo en pantallas grandes) ----------
+   Cada tarjeta se queda fija arriba y la siguiente sube y la tapa. El efecto
+   funciona solo con CSS; movimiento.js añade que la tarjeta tapada se achique y
+   se oscurezca un poco. En celular, con «reducir movimiento» y en modo
+   presentación queda la lista de tres pasos de siempre. */
+@media (min-width:900px) and (min-height:560px) and (prefers-reduced-motion:no-preference){
+  html:not(.presentar) #como-funciona{--sh:clamp(430px,calc(100vh - 150px),660px)}
+  html:not(.presentar) #como-funciona .pasos3{display:block;margin-top:34px;padding-bottom:10vh}
+  html:not(.presentar) #como-funciona .pasos3>li{
+    position:sticky;top:88px;height:var(--sh);margin:0 0 22vh;
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);grid-template-rows:1fr auto 1fr;
+    column-gap:clamp(24px,4vw,56px);align-items:center;padding:clamp(26px,3.6vw,52px);
+    background:var(--vidrio);color:var(--tinta);border:3px solid var(--tinta);border-radius:28px;
+    box-shadow:10px 10px 0 var(--etiqueta);overflow:hidden;transform-origin:50% 0;will-change:transform;
+  }
+  html:not(.presentar) #como-funciona .pasos3>li:last-child{margin-bottom:0}
+  html:not(.presentar) #como-funciona .pasos3>li::before{
+    content:"Paso " counter(p,decimal-leading-zero);grid-column:1;grid-row:1;align-self:end;margin-bottom:12px;
+    font-family:var(--tit);font-weight:800;font-size:.85rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rotulo);
+  }
+  html:not(.presentar) #como-funciona .pasos3>li::after{content:"";position:absolute;inset:0;background:var(--tinta);opacity:var(--cov,0);pointer-events:none}
+  html:not(.presentar) #como-funciona .pasos3 h3{grid-column:1;grid-row:2;margin:0 0 12px;font-size:clamp(1.8rem,3vw,2.7rem);line-height:1.06}
+  html:not(.presentar) #como-funciona .pasos3 h3::before{content:none}
+  html:not(.presentar) #como-funciona .pasos3 p{grid-column:1;grid-row:3;align-self:start;max-width:40ch;font-size:1.1rem;color:#2B2E52}
+  html:not(.presentar) #como-funciona .p3-vis{grid-column:2;grid-row:1/4;height:100%;min-height:0;gap:14px;padding:20px;align-content:center;background:#fff;border:2px solid var(--tinta);border-radius:20px}
+  html:not(.presentar) #como-funciona .p3-caja{padding:12px 16px;font-size:1rem;color:var(--tinta)}
+  html:not(.presentar) #como-funciona .p3-hilo{width:40px;border-color:var(--tinta)}
+  html:not(.presentar) #como-funciona .p3-tag{padding:9px 14px 9px 26px;font-size:1rem;clip-path:polygon(14px 0,100% 0,100% 100%,14px 100%,0 50%)}
+  html:not(.presentar) #como-funciona .p3-tag:not(.p3-tag2):not(.p3-tag3){background:var(--tinta);color:#fff}
+  html:not(.presentar) #como-funciona .p3-reloj svg{width:104px;height:104px;stroke:var(--tinta)}
+  html:not(.presentar) #como-funciona .p3-15{font-size:clamp(2.4rem,4vw,3.4rem)}
+}
+.cuenta{display:inline-block;min-width:1.15em;text-align:center;font-variant-numeric:tabular-nums}
+
+/* ---------- Primera semana: la línea se dibuja al bajar ---------- */
+.linea li::after{background:linear-gradient(var(--rotulo),var(--rotulo)) 0 0/100% calc(var(--f,1) * 100%) no-repeat var(--linea)}
+
+/* ---------- Ejemplo real: el sello se estampa ---------- */
+@media (prefers-reduced-motion:no-preference){
+  .real.mov-real .real-sello{opacity:0;transform:rotate(-34deg) scale(1.9)}
+  .real.mov-real.real-vista .real-sello{opacity:1;transform:rotate(-14deg) scale(1);transition:opacity .15s .3s,transform .55s .3s cubic-bezier(.34,1.56,.64,1)}
+}
+.real-tel{will-change:translate,rotate}
+
+/* ---------- Preguntas: la respuesta se despliega ---------- */
+@supports (interpolate-size:allow-keywords){
+  .faq{interpolate-size:allow-keywords}
+  .faq details::details-content{block-size:0;overflow:clip;transition:block-size .32s var(--mov-ui),content-visibility .32s allow-discrete}
+  .faq details[open]::details-content{block-size:auto}
+}
+
+/* ---------- Barra flotante de escritorio: dónde estás y WhatsApp ---------- */
+.dock{
+  position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:18;
+  width:max-content;max-width:calc(100vw - 24px);
+  display:none;align-items:center;gap:8px;padding:6px;border-radius:99px;
+  background:rgba(22,24,58,.9);color:#fff;border:2px solid rgba(255,255,255,.14);
+  -webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);
+  box-shadow:0 14px 34px -10px rgba(22,24,58,.6);
+  translate:-50% 160%;opacity:0;visibility:hidden;
+  transition:translate .5s var(--mov-out),opacity .25s,visibility 0s linear .5s;
+}
+.dock.dock-ver{translate:-50% 0;opacity:1;visibility:visible;transition-delay:0s}
+@media (min-width:760px){.dock{display:flex}}
+.dock-up{flex:none;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.12);color:#fff;display:grid;place-items:center;padding:0;transition:transform .15s var(--mov-ui),background-color .15s}
+.dock-up svg{width:20px;height:20px}
+.dock-up:active{transform:scale(.94)}
+.dock-sec{width:210px;overflow:hidden;font-family:var(--tit);font-weight:700;font-size:.9rem;text-align:center}
+.dock-t{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dock-t.dock-cambia{animation:mov-etq .3s var(--mov-ui)}
+@keyframes mov-etq{from{opacity:0;transform:translate3d(0,9px,0)}}
+.dock .dock-wa{min-height:44px;margin:0;padding:8px 18px;white-space:nowrap}
+.dock :focus-visible{outline-color:var(--etiqueta)}
+@media (hover:hover) and (pointer:fine){.dock-up:hover{background:rgba(255,255,255,.22)}}
+body.con-tour .dock{display:none}
+
+/* ---------- Impresión ---------- */
+@media print{
+  .dock,.vchips{display:none!important}
+  .rev{opacity:1!important;transform:none!important}
+  #como-funciona .pasos3>li{position:static!important;height:auto!important;transform:none!important}
+}
