@@ -32,6 +32,8 @@
   <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4v16l13-8z" fill="currentColor"/></symbol>
   <symbol id="i-pausa" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z" fill="currentColor"/></symbol>
   <symbol id="i-repetir" viewBox="0 0 24 24"><path d="M12 5V1L6 6l6 5V7a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z" fill="currentColor"/></symbol>
+  <symbol id="i-sonido" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9zm11.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM13 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z" fill="currentColor"/></symbol>
+  <symbol id="i-mudo" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9zm12.6 3 2.7-2.7-1.4-1.4-2.7 2.7-2.7-2.7-1.4 1.4 2.7 2.7-2.7 2.7 1.4 1.4 2.7-2.7 2.7 2.7 1.4-1.4z" fill="currentColor"/></symbol>
   <symbol id="i-cerrar" viewBox="0 0 24 24"><path d="M5 6.4 6.4 5 12 10.6 17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4-5.6-5.6L6.4 19 5 17.6 10.6 12z" fill="currentColor"/></symbol>
 </svg>
 
@@ -61,8 +63,9 @@
     <!-- Video explicativo: se dibuja con código (assets/js/video.js) -->
     <figure class="video" id="video" aria-labelledby="videoT">
       <div class="video-marco" id="vidMarco">
-        <canvas id="vidCanvas" width="1000" height="1000" role="img" aria-label="Video explicativo de Catalog. Debajo puedes leer lo que dice."></canvas>
-        <button type="button" class="video-grande" id="vidGrande"><span class="video-grande-i" aria-hidden="true"><svg class="ico"><use href="#i-play"/></svg></span><span id="vidGrandeTxt">Ver el video (1 min)</span></button>
+        <canvas id="vidCanvas" width="1000" height="1000" role="img" aria-label="Video explicativo de Catalog, con narración. Debajo puedes leer lo que dice."></canvas>
+        <button type="button" class="video-pill" id="vidPill" hidden><svg class="ico" aria-hidden="true"><use href="#i-mudo"/></svg>Activar sonido</button>
+        <button type="button" class="video-grande" id="vidGrande"><span class="video-grande-i" aria-hidden="true"><svg class="ico"><use href="#i-play"/></svg></span><span id="vidGrandeTxt">Ver el video con sonido</span></button>
         <div class="video-fin" id="vidFin" hidden>
           <p class="video-fin-t">¿Lo armamos para tu tienda?</p>
           <a class="btn btn-wa" data-wa="video" href="#cierre"><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg>Escribir por WhatsApp</a>
@@ -71,13 +74,15 @@
       </div>
       <div class="video-ctrl">
         <button type="button" class="video-b" id="vidBtn" aria-label="Reproducir el video"><svg class="ico" aria-hidden="true"><use href="#i-play"/></svg></button>
-        <input type="range" class="esc-seek video-seek" id="vidSeek" min="0" max="695" step="1" value="0" aria-label="Avance del video">
-        <span class="video-t" id="vidT">0:00 / 1:09</span>
+        <input type="range" class="esc-seek video-seek" id="vidSeek" min="0" max="894" step="1" value="0" aria-label="Avance del video">
+        <span class="video-t" id="vidT">0:00 / 1:29</span>
+        <button type="button" class="video-b" id="vidSonido" aria-pressed="false" aria-label="Activar el sonido del video" hidden><svg class="ico" aria-hidden="true"><use href="#i-mudo"/></svg></button>
         <button type="button" class="video-b" id="vidFull" aria-label="Ver el video en pantalla completa" hidden><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4h6v2H6v4H4zm10 0h6v6h-2V6h-4zM4 14h2v4h4v2H4zm14 0h2v6h-6v-2h4z" fill="currentColor"/></svg></button>
       </div>
-      <figcaption class="video-cap" id="videoT">Catalog en un minuto: qué es, cómo funciona y los dos extras. No tiene sonido: todo está escrito.</figcaption>
+      <figcaption class="video-cap" id="videoT">Cómo funciona Catalog, con voz. Toca el altavoz para escucharlo; también puedes leerlo abajo.</figcaption>
       <details class="video-txt"><summary>Leer lo que dice el video</summary><ol id="vidTexto"></ol></details>
       <p class="oculto" id="vidVivo" aria-live="polite"></p>
+      <audio id="vidAudio" preload="none" src="assets/audio/catalog-audio.m4a"></audio>
     </figure>
 
     <div class="portada-acc">
@@ -626,6 +631,7 @@
 <script src="assets/js/demos.js" defer></script>
 <script src="assets/js/reporte.js" defer></script>
 <script src="assets/js/extras.js" defer></script>
+<script src="assets/js/video-tiempos.js" defer></script>
 <script src="assets/js/video.js" defer></script>
 </body>
 </html>

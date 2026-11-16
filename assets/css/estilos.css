@@ -914,3 +914,14 @@ a.enlace{display:inline-flex;align-items:center}
   .cab .btn-ch{font-size:.76rem;padding:8px 9px;gap:5px}
   .cab .btn-ch .ico{width:1.1em;height:1.1em}
 }
+
+
+/* =====================================================================
+   RONDA 6: sonido del video
+   ===================================================================== */
+.video-pill{position:absolute;right:8px;top:4px;z-index:2;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:4px 16px 4px 12px;border-radius:99px;border:2px solid var(--tinta);background:var(--etiqueta);color:var(--tinta);font-family:var(--tit);font-weight:800;font-size:.92rem;box-shadow:0 3px 0 var(--tinta)}
+.video-pill:active{transform:translateY(3px);box-shadow:none}
+.video-b[aria-pressed="true"]{background:var(--tinta);color:#fff}
+.video-ctrl{gap:8px}
+.video-t{font-size:.8rem}
+@media (max-width:359px){.video-t{display:none}}

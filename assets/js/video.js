@@ -257,16 +257,16 @@
               texto(dinero(p.p), x + 152, ry + 88, { size: 34, peso: 800, fam: FT });
               etiqueta(x + w - 170, ry + 28, "Hay", { size: 30 });
               if (i === 1) {
-                var k = tramo(s, 2.2, 0.35);
+                var k = tramo(s, ev("problema", "tachon", 2.2), 0.35);
                 if (k > 0) alfa(k, function () {
                   ctx.strokeStyle = COL.aviso; ctx.lineWidth = 8; ctx.lineCap = "round";
                   ctx.beginPath(); ctx.moveTo(x + w - 180, ry + 72); ctx.lineTo(x + w - 64, ry + 30); ctx.stroke(); ctx.lineCap = "butt";
                 });
-                entrar(s, 2.7, 0.35, function () { etiqueta(x + w - 270, ry + 74, "Ya se vendió", { size: 26, fondo: COL.aviso, color: "#fff" }); }, 8);
+                entrar(s, ev("problema", "etiqueta", 2.7), 0.35, function () { etiqueta(x + w - 270, ry + 74, "Ya se vendió", { size: 26, fondo: COL.aviso, color: "#fff" }); }, 8);
               }
             });
           });
-          var k2 = tramo(s, 4.2, 0.45);
+          var k2 = tramo(s, ev("problema", "banner", 4.2), 0.45);
           if (k2 > 0) {
             ctx.save(); ctx.translate(500, 842); ctx.rotate(-0.05);
             var e = 0.7 + 0.3 * rebote(k2); ctx.scale(e, e); ctx.globalAlpha *= sale(k2);
@@ -293,7 +293,7 @@
             ctx.save(); ctx.setLineDash([18, 14]); ctx.lineDashOffset = -s * 60;
             ctx.strokeStyle = COL.rotulo; ctx.lineWidth = 7;
             ctx.beginPath(); ctx.moveTo(360, 590); ctx.lineTo(360 + 196 * sale(k), 590); ctx.stroke(); ctx.restore();
-            entrar(s, 1.9, 0.4, function () {
+            entrar(s, ev("solucion", "chip", 1.9), 0.4, function () {
               caja(376, 616, 168, 54, 27, COL.tinta);
               texto("cada 15 min", 460, 652, { size: 26, peso: 700, fam: FT, color: "#fff", align: "center" });
             }, 8);
@@ -369,15 +369,15 @@
           var y = f.y + 6;
           var q = "¿Algo para regalar hasta $50?";
           var h1 = altoBurbuja(q, f.w - 60, 28);
-          entrar(s, 0.4, 0.35, function () { burbuja(q, f.x + f.w - 4, y, f.w - 60, { size: 28, der: true, fondo: COL.celeste, linea: COL.celeste }); }, 14);
+          entrar(s, ev("pedido", "pregunta", 0.4), 0.35, function () { burbuja(q, f.x + f.w - 4, y, f.w - 60, { size: 28, der: true, fondo: COL.celeste, linea: COL.celeste }); }, 14);
           y += h1 + 12;
           var a = "Mira, estos sí hay:";
           var h2 = altoBurbuja(a, f.w - 60, 28, "Asistente");
-          entrar(s, 1.5, 0.35, function () { burbuja(a, f.x + 4, y, f.w - 60, { size: 28, fondo: COL.etiqueta, linea: COL.etiqueta, quien: "Asistente", colorQuien: COL.tinta }); }, 14);
+          entrar(s, ev("pedido", "asistente", 1.5), 0.35, function () { burbuja(a, f.x + 4, y, f.w - 60, { size: 28, fondo: COL.etiqueta, linea: COL.etiqueta, quien: "Asistente", colorQuien: COL.tinta }); }, 14);
           y += h2 + 12;
           d.regalo.forEach(function (p, i) {
             var cy = y + i * 108;
-            entrar(s, 2.0 + i * 0.4, 0.35, function () {
+            entrar(s, ev("pedido", "tarjeta1", 2.0) + i * (ev("pedido", "tarjeta2", 2.4) - ev("pedido", "tarjeta1", 2.0)), 0.35, function () {
               caja(f.x + 4, cy, f.w - 8, 96, 14, "#fff", COL.tinta, 2);
               producto(p, f.x + 14, cy + 10, 76);
               texto(corto(p.n, f.w - 120, 25, 700), f.x + 104, cy + 40, { size: 25, peso: 700 });
@@ -386,19 +386,19 @@
             }, 12);
           });
           var by = f.y + f.h - 78, bx = f.x + f.w / 2;
-          entrar(s, 3.0, 0.35, function () {
+          entrar(s, ev("pedido", "boton", 3.0), 0.35, function () {
             caja(f.x + 4, by, f.w - 8, 70, 16, COL.wa);
             texto("Pedir por WhatsApp", bx, by + 46, { size: 30, peso: 800, fam: FT, color: COL.waTxt, align: "center" });
           }, 10);
-          var kt = tramo(s, 3.9, 0.7);
+          var kt = tramo(s, ev("pedido", "toque", 3.9), 0.7);
           if (kt > 0 && kt < 1) alfa(1 - kt, function () {
             ctx.beginPath(); ctx.arc(bx, by + 35, 20 + 110 * kt, 0, Math.PI * 2); ctx.fillStyle = "rgba(22,24,58,.22)"; ctx.fill();
           });
           var p0 = d.regalo[0];
           var msg = "Hola " + d.nombre + ", quiero hacer este pedido:\n1 × " + p0.n + ": " + dinero(p0.p) + "\nTotal: " + dinero(p0.p) + "\n¿Me confirmas si está disponible?";
-          entrar(s, 4.5, 0.4, function () { texto("Te llega a ti:", 540, 396, { size: 34, peso: 800, fam: FT }); }, 10);
-          entrar(s, 4.8, 0.5, function () { burbuja(msg, 540, 424, 400, { size: 27, fondo: COL.waBur, linea: COL.waBur }); }, 0, -40);
-          entrar(s, 6.3, 0.45, function () { texto(e.extra[0], 540, 820, { size: 28, peso: 600, color: COL.suave, max: 400, lh: 36 }); }, 10);
+          entrar(s, ev("pedido", "mensaje", 4.8) - 0.3, 0.4, function () { texto("Te llega a ti:", 540, 396, { size: 34, peso: 800, fam: FT }); }, 10);
+          entrar(s, ev("pedido", "mensaje", 4.8), 0.5, function () { burbuja(msg, 540, 424, 400, { size: 27, fondo: COL.waBur, linea: COL.waBur }); }, 0, -40);
+          entrar(s, ev("pedido", "nota", 6.3), 0.45, function () { texto(e.extra[0], 540, 820, { size: 28, peso: 600, color: COL.suave, max: 400, lh: 36 }); }, 10);
         }
       },
       {
@@ -418,7 +418,7 @@
           });
           [["Se vendió más barato que tu sistema", COL.aviso], ["Se está acabando: reponer", COL.ambar], ["Se vende rápido: comprar más", COL.verde]].forEach(function (a, i) {
             var ay = f.y + 230 + i * 90;
-            entrar(s, 1.6 + i * 0.7, 0.4, function () {
+            entrar(s, ev("reportes", "alerta1", 1.6) + i * (ev("reportes", "alerta2", 2.3) - ev("reportes", "alerta1", 1.6)), 0.4, function () {
               caja(f.x, ay, f.w, 78, 14, "#fff", COL.linea, 2);
               caja(f.x, ay, 14, 78, 7, a[1]);
               fuente(24, 700, FX);
@@ -426,13 +426,14 @@
               texto(a[0], f.x + 30, ay + 39 - (ls.length - 1) * 14 + 9, { size: 24, peso: 700, max: f.w - 48, lh: 28 });
             }, 0, 40);
           });
-          entrar(s, 3.8, 0.5, function () { texto(e.extra[0], 540, 420, { size: 34, peso: 600, max: 400, lh: 44 }); }, 12);
+          entrar(s, ev("reportes", "texto", 3.8), 0.5, function () { texto(e.extra[0], 540, 420, { size: 34, peso: 600, max: 400, lh: 44 }); }, 12);
         }
       },
       {
         id: "conteo", chip: "Extra 2: conteo", titulo: "Cuenta tu inventario desde el celular.", dur: 8,
         extra: ["Varias personas cuentan a la vez y el sistema marca las diferencias."],
         dibujar: function (s, d, e) {
+          var c0 = ev("conteo", "conteo", 1.0), c1 = ev("conteo", "chips", 5.6), cdur = Math.max(1.5, c1 - c0 - 1.1);
           entrar(s, 0.3, 0.45, function () { texto(e.extra[0], 60, 322, { size: 32, peso: 600, color: COL.suave, max: 880 }); }, 10);
           var metas = [[4, 2, 4], [3, 1, 4], [2, 5, 4]];
           [60, 370, 680].forEach(function (x, zi) {
@@ -443,7 +444,7 @@
               texto("Zona " + (zi + 1), x + 22, y + 46, { size: 28, peso: 800, fam: FT });
               for (var r = 0; r < 3; r++) {
                 var ry = y + 66 + r * 84, meta = metas[zi][r];
-                var n = Math.min(meta, Math.floor(tramo(s, 1.0 + r * 0.3 + zi * 0.2, 3.0) * (meta + 0.999)));
+                var n = Math.min(meta, Math.floor(tramo(s, c0 + r * 0.3 + zi * 0.2, cdur) * (meta + 0.999)));
                 caja(x + 14, ry, w - 28, 72, 12, COL.vidrio);
                 producto(d.conteo[zi * 3 + r], x + 22, ry + 8, 56);
                 texto(String(n), x + w - 104, ry + 48, { size: 34, peso: 800, fam: FT, align: "right" });
@@ -452,7 +453,7 @@
               }
             });
           });
-          var kp = tramo(s, 1.0, 4.4);
+          var kp = tramo(s, c0, Math.max(1.5, c1 - c0 - 0.3));
           entrar(s, 0.9, 0.4, function () {
             texto("Avance compartido", 60, 760, { size: 28, peso: 700 });
             texto(Math.round(100 * kp) + " %", 940, 760, { size: 32, peso: 800, fam: FT, align: "right" });
@@ -463,7 +464,7 @@
           [["Igual", COL.verde, "#fff"], ["Falta 1", COL.aviso, "#fff"], ["Sobra 1", COL.ambar, COL.tinta]].forEach(function (c, i) {
             fuente(28, 800, FT);
             var w = ctx.measureText(c[0]).width + 48, cx = x;
-            entrar(s, 5.6 + i * 0.25, 0.35, function () {
+            entrar(s, c1 + i * 0.25, 0.35, function () {
               caja(cx, 840, w, 54, 27, c[1]);
               texto(c[0], cx + w / 2, 877, { size: 28, peso: 800, fam: FT, color: c[2], align: "center" });
             }, 10);
@@ -505,22 +506,29 @@
         id: "cierre", chip: "Empieza hoy", titulo: "Tú sigues vendiendo. Yo lo armo y lo mantengo.", dur: 6.5,
         dibujar: function (s, d) {
           entrar(s, 0.3, 0.5, function () { marca(500, 470, 120, true); }, 20);
-          entrar(s, 1.0, 0.45, function () {
+          entrar(s, ev("cierre", "boton", 1.0), 0.45, function () {
             fuente(40, 800, FT);
             var t = "Escríbeme por WhatsApp", w = ctx.measureText(t).width + 130;
             caja(500 - w / 2, 540, w, 96, 48, COL.wa);
             iconoChat(500 - w / 2 + 52, 584, 20, COL.waTxt);
             texto(t, 500 - w / 2 + 88, 602, { size: 40, peso: 800, fam: FT, color: COL.waTxt });
           }, 16);
-          if (d.tel) entrar(s, 1.6, 0.45, function () { texto(d.tel, 500, 740, { size: 68, peso: 800, fam: FT, align: "center" }); }, 14);
-          entrar(s, 2.2, 0.45, function () { texto("Hoy funciona con Contífico. ¿Usas otro sistema? Lo revisamos.", 500, 830, { size: 28, peso: 600, color: COL.suave, align: "center", max: 840 }); }, 10);
+          if (d.tel) entrar(s, ev("cierre", "numero", 1.6), 0.45, function () { texto(d.tel, 500, 740, { size: 68, peso: 800, fam: FT, align: "center" }); }, 14);
+          entrar(s, ev("cierre", "nota", 2.2), 0.45, function () { texto("Hoy funciona con Contífico. ¿Usas otro sistema? Lo revisamos.", 500, 830, { size: 28, peso: 600, color: COL.suave, align: "center", max: 840 }); }, 10);
         }
       }
     ];
     var INTRO = {
-      id: "intro", fijo: true, chip: "Video · 1 minuto", titulo: "Mira en un minuto cómo funciona Catalog.", dur: 1.8,
+      id: "intro", fijo: true, chip: "Video con sonido", titulo: "Mira cómo funciona Catalog.", dur: 3.0,
       dibujar: function (s, d) { BASE[2].dibujar(99, d, BASE[2]); }
     };
+
+    /* Duraciones y momentos clave que salen de la narración (herramientas/audio, archivo video-tiempos.js).
+       Sin ese archivo, el video usa los tiempos de fábrica de cada escena. */
+    var TT = window.VV_VIDEO_TIEMPOS || null;
+    function ev(id, nombre, defecto) { var e = TT && TT.escenas && TT.escenas[id] && TT.escenas[id].ev; return e && e[nombre] != null ? e[nombre] : defecto; }
+    function lineasDe(id) { var t = TT && TT.escenas && TT.escenas[id]; return t ? t.lineas.map(function (l) { return l.texto; }) : []; }
+    if (TT && TT.escenas) [INTRO].concat(BASE).forEach(function (e) { var t = TT.escenas[e.id]; if (t) e.dur = t.dur; });
 
     /* ---------------- datos de la escena ---------------- */
     function datos() {
@@ -592,28 +600,34 @@
       reconstruir: function () { construir(); },
       duracion: function () { return TOTAL; },
       escenaEn: escenaEn,
-      escenas: function () { return ESC.map(function (e) { return { id: e.id, chip: e.chip, titulo: e.titulo, extra: e.extra || [], inicio: e.inicio, dur: e.dur }; }); }
+      /* La narración solo cuadra si el video tiene exactamente las mismas escenas que cuando se grabó la voz. */
+      sincronizado: function () { return !!(TT && TT.orden && TT.orden.length === ESC.length && TT.orden.every(function (id, i) { return ESC[i].id === id; })); },
+      escenas: function () { return ESC.map(function (e) { return { id: e.id, chip: e.chip, titulo: e.titulo, extra: e.extra || [], inicio: e.inicio, dur: e.dur, lineas: lineasDe(e.id) }; }); }
     };
   }
 
   window.VV_VIDEO = { crear: crear, telLocal: telLocal, dinero: dineroLocal };
 
   /* =====================================================================
-     REPRODUCTOR EN LA PÁGINA
+     REPRODUCTOR EN LA PÁGINA, con narración y sonido opcional
      ===================================================================== */
   var VV = window.VV, D = window.VV_DATOS;
   if (!VV || !D || !VV.alListo) return;
   VV.alListo(function () {
     var U = VV.util, $ = U.$, C = window.CONFIG || {};
-    var cv = $("vidCanvas"), marco = $("vidMarco");
+    var cv = $("vidCanvas"), marco = $("vidMarco"), audio = $("vidAudio");
     if (!cv || !marco) return;
     var reduce = U.reduce;
-    var st = { t: 0, play: false, previo: 0, ultimo: 0, raf: 0, auto: false, tocado: false, empezado: false, esc: -1, reanudar: false };
+    /* sonido: null = todavía no decidió (arranca mudo), true = con sonido, false = lo silenció la persona */
+    var st = { t: 0, play: false, previo: 0, ultimo: 0, raf: 0, auto: false, tocado: false, empezado: false, esc: -1, reanudar: false, sonido: null, audioOk: !!audio, espera: 0 };
     var motor = crear(cv, {
       nombre: VV.nombre, iniciales: VV.iniciales, productos: function () { return VV.productos; },
-      ilustrar: D.ilustrar, dinero: U.dinero, config: C, reduce: reduce,
+      ilustrar: D.ilustrar, dinero: U.dinero, config: C, reduce: reduce, intro: true,
       alCargar: function () { if (!st.play) pintar(); }
     });
+    var audioMalo = false;
+    function revisarAudio() { st.audioOk = !!audio && !audioMalo && motor.sincronizado(); if (!st.audioOk && st.sonido === true) { st.sonido = null; if (audio) audioPausa(); } }
+    revisarAudio();
 
     function tamano() {
       var r = cv.getBoundingClientRect();
@@ -637,39 +651,83 @@
       var fin = terminado() && !st.play;
       $("vidFin").hidden = !fin;
       $("vidGrande").hidden = st.play || fin;
-      $("vidGrandeTxt").textContent = st.t > 0.05 ? "Seguir viendo" : "Ver el video (1 min)";
+      $("vidGrandeTxt").textContent = st.t > 0.05 ? "Seguir viendo" : (st.audioOk ? "Ver el video con sonido" : "Ver el video");
+      var so = $("vidSonido"), on = st.sonido === true;
+      so.hidden = !st.audioOk;
+      so.setAttribute("aria-pressed", String(on));
+      so.setAttribute("aria-label", on ? "Silenciar el video" : "Activar el sonido del video");
+      so.classList.toggle("en-curso", on);
+      so.querySelector("use").setAttribute("href", on ? "#i-sonido" : "#i-mudo");
+      $("vidPill").hidden = !(st.audioOk && st.play && st.sonido === null);
     }
     function pintar() { tamano(); motor.dibujar(st.empezado ? st.t : -1); ui(); }
     function anunciar() {
       var i = motor.escenaEn(st.t);
       if (i !== st.esc) { st.esc = i; if (st.tocado) $("vidVivo").textContent = motor.escenas()[i].titulo; }
     }
+
+    /* ---- sonido ---- */
+    function audioPlay() {
+      if (!audio || !st.audioOk || st.sonido !== true) return;
+      /* Safari (iPhone) ignora el cambio de posición hasta conocer el archivo: se repite al cargar los datos.
+         Y play() se llama aquí mismo, dentro del toque de la persona, porque allí solo lo permite así. */
+      if (audio.readyState >= 1) { try { audio.currentTime = st.t; } catch (e) {} }
+      else audio.addEventListener("loadedmetadata", function () { try { audio.currentTime = st.t; } catch (e) {} }, { once: true });
+      var p = audio.play();
+      if (p && p.catch) p.catch(function () { st.sonido = null; ui(); }); /* si el navegador no lo deja, sigue mudo */
+    }
+    function audioPausa() { if (audio && !audio.paused) audio.pause(); }
+    function audioIr(t) { if (audio && st.audioOk && st.sonido === true) { try { audio.currentTime = t; } catch (e) {} } }
+    function alternarSonido() {
+      tocar();
+      if (!st.audioOk) return;
+      if (st.sonido === true) { st.sonido = false; audioPausa(); }
+      else { st.sonido = true; if (st.play) audioPlay(); }
+      ui();
+    }
+    if (audio) audio.addEventListener("error", function () { audioMalo = true; revisarAudio(); ui(); });
+
+    /* ---- reloj: con sonido manda el audio; sin sonido, el reloj de la página ---- */
     function tick(now) {
       if (!st.play) return;
-      st.t += Math.min(100, Math.max(0, now - st.previo)) / 1000; st.previo = now;
-      if (st.t >= motor.duracion()) { st.t = motor.duracion(); st.play = false; }
+      var delta = Math.min(100, Math.max(0, now - st.previo)) / 1000; st.previo = now;
+      var conAudio = st.sonido === true && st.audioOk && audio && !audio.paused && !audio.ended;
+      if (conAudio && audio.readyState >= 3) {
+        st.espera = 0;
+        if (Math.abs(audio.currentTime - st.t) > 0.4) { try { audio.currentTime = st.t + delta; } catch (e) {} st.t += delta; }
+        else st.t = audio.currentTime;
+      } else if (conAudio) {
+        st.espera += delta; /* el audio se está cargando: la imagen espera */
+        if (st.espera > 5) { st.sonido = null; audioPausa(); st.espera = 0; }
+      } else st.t += delta;
+      if (st.t >= motor.duracion()) { st.t = motor.duracion(); st.play = false; audioPausa(); }
       if (now - st.ultimo >= 32 || !st.play) { st.ultimo = now; motor.dibujar(st.t); ui(); anunciar(); }
       if (st.play) st.raf = requestAnimationFrame(tick);
     }
     function play(auto) {
       if (st.play) return;
       if (terminado()) st.t = 0;
-      st.empezado = true; st.play = true; st.auto = !!auto;
+      if (!auto && st.sonido === null && st.audioOk) st.sonido = true; /* si la persona lo pidió, va con sonido */
+      st.empezado = true; st.play = true; st.auto = !!auto; st.espera = 0;
       st.previo = performance.now(); st.ultimo = 0;
       tamano();
+      audioPlay();
       st.raf = requestAnimationFrame(tick);
       ui();
     }
-    function pausa() { st.play = false; cancelAnimationFrame(st.raf); motor.dibujar(st.t); ui(); }
+    function pausa() { st.play = false; cancelAnimationFrame(st.raf); audioPausa(); motor.dibujar(st.t); ui(); }
     function tocar() { st.tocado = true; }
     function alternar() { tocar(); if (st.play) pausa(); else play(false); }
 
     $("vidGrande").addEventListener("click", function () { tocar(); play(false); });
     $("vidBtn").addEventListener("click", alternar);
+    $("vidSonido").addEventListener("click", alternarSonido);
+    $("vidPill").addEventListener("click", function () { tocar(); st.sonido = true; audioPlay(); ui(); });
     cv.addEventListener("click", alternar);
     $("vidSeek").addEventListener("input", function () {
       tocar(); st.empezado = true;
       st.t = clamp(Number(this.value) / 10, 0, motor.duracion());
+      audioIr(st.t);
       motor.dibujar(st.t); ui(); anunciar();
     });
     $("vidOtra").addEventListener("click", function () { tocar(); st.t = 0; play(false); });
@@ -684,8 +742,8 @@
       document.addEventListener("fullscreenchange", function () { setTimeout(function () { tamano(); motor.dibujar(st.empezado ? st.t : -1); }, 80); });
     }
 
-    /* Arranca solo cuando se ve (sin sonido; no hay audio) y se detiene si sale de la pantalla.
-       Con movimiento reducido no arranca solo. Si la persona lo toca, manda ella. */
+    /* Arranca solo cuando se ve, sin sonido (los navegadores no permiten sonido sin que la persona toque algo),
+       y se detiene si sale de la pantalla. Con movimiento reducido no arranca solo. Si la persona lo toca, manda ella. */
     if ("IntersectionObserver" in window) {
       var io = new IntersectionObserver(function (es) {
         es.forEach(function (e) {
@@ -708,11 +766,11 @@
       motor.escenas().forEach(function (e) {
         var li = U.el("li");
         li.appendChild(U.el("strong", "", e.chip + ". "));
-        li.appendChild(document.createTextNode(e.titulo + (e.extra.length ? " " + e.extra.join(" ") : "")));
+        li.appendChild(document.createTextNode(e.lineas && e.lineas.length ? e.lineas.join(" ") : e.titulo + (e.extra.length ? " " + e.extra.join(" ") : "")));
         ol.appendChild(li);
       });
     }
-    document.addEventListener("vv:cambio", function () { motor.reconstruir(); llenarTexto(); if (st.t > motor.duracion()) st.t = motor.duracion(); pintar(); });
+    document.addEventListener("vv:cambio", function () { motor.reconstruir(); revisarAudio(); llenarTexto(); if (st.t > motor.duracion()) st.t = motor.duracion(); pintar(); });
     if (document.fonts && document.fonts.load) {
       Promise.all([document.fonts.load('800 60px "Bricolage"'), document.fonts.load('700 30px "Bricolage"'), document.fonts.load('400 30px "Hanken"'), document.fonts.load('700 30px "Hanken"')])
         .then(function () { if (!st.play) pintar(); }).catch(function () {});
@@ -721,9 +779,9 @@
     pintar();
 
     VV.video = {
-      estado: function () { return { t: st.t, play: st.play, auto: st.auto, empezado: st.empezado, dur: motor.duracion() }; },
+      estado: function () { return { t: st.t, play: st.play, auto: st.auto, empezado: st.empezado, dur: motor.duracion(), sonido: st.sonido, audioOk: st.audioOk, audioT: audio ? audio.currentTime : null, audioPausado: audio ? audio.paused : null }; },
       play: function () { tocar(); play(false); }, pausa: function () { tocar(); pausa(); },
-      ir: function (t) { tocar(); st.empezado = true; st.t = clamp(t, 0, motor.duracion()); motor.dibujar(st.t); ui(); },
+      ir: function (t) { tocar(); st.empezado = true; st.t = clamp(t, 0, motor.duracion()); audioIr(st.t); motor.dibujar(st.t); ui(); },
       escenas: function () { return motor.escenas(); }
     };
   });
